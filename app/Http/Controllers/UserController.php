@@ -29,6 +29,12 @@ class UserController extends Controller
     public function index()
     {
         if (request()->ajax()) {
+            if(request()->tab == 'prakom'){
+                $users = $this->modelGetAll(['employee' => function ($q) {
+                    $q->with(['unit', 'group', 'position']);
+                }])->where('level', 'prakom');
+                return Datatables::of($users)->make(true);
+            }
             $users = $this->modelGetAll(['employee' => function ($q) {
                 $q->with(['unit', 'group', 'position']);
             }])->where('level', 'penilai');
@@ -37,6 +43,9 @@ class UserController extends Controller
         $units = Unit::get();
         $groups = Group::get();
         $positions = Position::get();
+        if(request()->tab == 'prakom'){
+            return view('sekretariat.users.prakom', compact('positions', 'groups', 'units'));
+        }
         return view('sekretariat.users.index', compact('positions', 'groups', 'units'));
     }
 
@@ -75,7 +84,11 @@ class UserController extends Controller
             "unit_id" => ['required', 'numeric']
         ]);
 
-        $validatedUser += ['level' => 'penilai'];
+        if($request->tab == 'prakom'){
+            $validatedUser += ['level' => 'prakom'];
+        }else{
+            $validatedUser += ['level' => 'penilai'];
+        }
         DB::beginTransaction();
         try {
             $user = $this->modelCreate($validatedUser);
@@ -100,11 +113,14 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        // dd($this->modelFind($id, ['employee' => function ($q) {
-        //     $q->with(['unit', 'group', 'position']);
-        // }])->where('level', 'penilai'));
-        if ($data = User::with('employee')->where('level', 'penilai')->where('id', $id)->first()) {
-            return $data;
+        if (request()->tab == 'prakom') {
+            if ($data = User::with('employee')->where('level', 'penilai')->where('id', $id)->first()) {
+                return $data;
+            }
+        } else {
+            if ($data = User::with('employee')->where('level', 'penilai')->where('id', $id)->first()) {
+                return $data;
+            }
         }
         return abort(501, 'Data tidak ditemukan');
     }
@@ -141,6 +157,7 @@ class UserController extends Controller
             $validatedUser += $request->validate([
                 "password" => ['required', 'confirmed', Password::default()],
             ]);
+            $validatedUser['password'] = Hash::make($validatedUser['password']);
         }
 
         $validatedDetail = $request->validate([

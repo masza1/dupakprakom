@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Str;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Controller extends BaseController
 {
@@ -54,5 +55,22 @@ class Controller extends BaseController
 
     public function modelDelete($id){
         return $this->model->where('id', $id)->delete();
+    }
+
+    public function storeFile($file, $path)
+    {
+        if (request()->file($file) !== NULL) {
+            return request()->file($file)->storeAs($path, Str::random(20) . '_' . date('YmdHis') . '.' . request()->file($file)->getClientOriginalExtension());
+        }
+        return NULL;
+    }
+
+    public function deletFile($file)
+    {
+        if($file != NULL){
+            if (file_exists(public_path('storage/' . $file))) {
+                unlink(public_path('storage/' . $file));
+            }
+        }
     }
 }

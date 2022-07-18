@@ -1,5 +1,5 @@
 @props(['modalId' => '', 'withForm' => false, 'isFile' => false, 'modalWidth' => 'lg', 'formId'])
-<div class="modal fade" {{ $attributes->only('id') }} data-coreui-backdrop="static" data-coreui-keyboard="false" tabindex="-1" aria-labelledby="{{ $modalId }}Label" aria-hidden="true">
+<div class="modal fade" {{ $attributes->only('id') }} data-coreui-backdrop="static" data-coreui-keyboard="false" {{ isset($tabindex) ? '' : 'tabindex="-1"' }} aria-labelledby="{{ $modalId }}Label" aria-hidden="true">
     <div class="modal-dialog modal-{{ $modalWidth }}">
         <div class="modal-content">
             <div class="modal-header">

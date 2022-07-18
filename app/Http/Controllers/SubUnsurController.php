@@ -128,4 +128,15 @@ class SubUnsurController extends Controller
         }
         return abort(501, 'Query Failed');
     }
+
+    public function getSubUnsur(){
+        if(request()->ajax()){
+            $element_id = request()->element_id;
+            if($sub_element = $this->model->where('element_id', $element_id)->get()){
+                return $sub_element;
+            }
+        }
+
+        return abort(501, 'Unsur tidak tersedia');
+    }
 }

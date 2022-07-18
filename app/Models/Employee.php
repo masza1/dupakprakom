@@ -22,6 +22,10 @@ class Employee extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function submissions(){
+        return $this->hasMany(Submission::class);
+    }
+
     public function group(){
         return $this->belongsTo(Group::class);
     }

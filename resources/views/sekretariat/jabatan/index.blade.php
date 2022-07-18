@@ -133,6 +133,10 @@
                             }
                         }
                     ],
+                    columnDefs: [{
+                        targets: '_all',
+                        defaultContent: '<div class="text-center align-middle">-</div>'
+                    }],
                     buttons: [{
                         text: 'Tambah Jabatan',
                         className: 'btn btn-success btn-sm text-white',
@@ -141,6 +145,12 @@
                             'data-coreui-toggle': 'modal',
                             'data-coreui-target': '#modalAddJabatan',
                         },
+                    }, {
+                        text: 'Refresh Data',
+                        className: 'btn btn-primary btn-sm text-white',
+                        action: function(){
+                            datatable.ajax.reload()
+                        }
                     }]
                 })
             }

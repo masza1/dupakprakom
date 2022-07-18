@@ -10,11 +10,13 @@
     <title>Dupak Prakom - {{ $title ?? 'Selamat Datang' }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('vendors/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendors/select2/css/select2.css') }}">
 
     <link rel="stylesheet" href="{{ asset('vendors/simplebar/css/simplebar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/vendors/simplebar.css') }}">
 
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 
     <link href="{{ asset('css/examples.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/@coreui/chartjs/css/coreui-chartjs.css" rel="stylesheet') }}">
@@ -37,6 +39,11 @@
             z-index: 99999;
             display: none;
             ">
+
+    @auth
+        @include('layouts.navigation')
+    @endauth
+    @stack('offcanvas')
     @yield('body')
 
     @stack('modal')
@@ -57,12 +64,41 @@
     <script src="{{ asset('vendors/@coreui/utils/js/coreui-utils.js') }}"></script>
 
     <script src="{{ asset('vendors/jquery/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('vendors/select2/js/select2.js') }}"></script>
     <script src="{{ asset('vendors/datatables.net/js/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('vendors/datatables.net/js/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('js/jquery-form.min.js') }}"></script>
     <script src="{{ asset('js/base-function.js') }}"></script>
     @stack('js')
+    <script>
+        $(document).ready(function() {
+            $('.sidebar-form-lg .sidebar-close').on('click', function() {
+                if (!$('.sidebar-form-lg').hasClass('hide')) {
+                    $('.sidebar-form-lg').addClass('hide')
+                }
+            })
+
+            // var elementPosition = $('.sidebar-static');
+
+            // $('.sidebar-form-lg').scroll(function() {
+            //     if (!$('.sidebar-form-lg').hasClass('hide')) {
+            //         if ($('.sidebar-form-lg').scrollTop() > elementPosition.height()) {
+            //             if(!$('.sidebar-form-lg:not(.hide) .sidebar-static').hasClass('to-fixed')){
+            //                 $('.sidebar-form-lg:not(.hide) .sidebar-static').addClass('to-fixed');
+            //                 $('.sidebar-form-lg:not(.hide) .body-canvas').css('margin-top', elementPosition.height())
+            //             }
+            //         } else {
+            //             if($('.sidebar-form-lg:not(.hide) .sidebar-static').hasClass('to-fixed')){
+            //                 $('.sidebar-form-lg:not(.hide) .sidebar-static').removeClass('to-fixed');
+            //                 $('.sidebar-form-lg:not(.hide) .body-canvas').css('margin-top', 0)
+
+            //             }
+            //         }
+            //     }
+            // });
+        })
+    </script>
 </body>
 
 </html>

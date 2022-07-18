@@ -1,5 +1,5 @@
 var alertStyle = 'position: absolute;top: 10px;right: 10px;z-index: 99999;padding: 1rem 0.5rem!important; min-width:150px; max-width:500px;'
-
+var _isRequest = false;
 $('#modalDelete').on('show.coreui.modal', function(e) {
     let btn = $(e.relatedTarget);
     let modal = $(this);
@@ -9,12 +9,17 @@ $('#modalDelete').on('show.coreui.modal', function(e) {
     modal.find('form').attr('action', url);
 })
 
-function deleteData(form, datatable) {
+function deleteData(form, datatable = undefined, callback) {
     let modal = $('#modalDelete');
-
     formAjax(form, modal, function(data, status, jqxhr, form, modal) {
         modal.modal('hide')
-        datatable.ajax.reload()
+        if (data.datatable != undefined || data.datatable != null) {
+            if (typeof callback == 'function') {
+                callback(data)
+            }
+        } else {
+            datatable.ajax.reload()
+        }
     })
 }
 
@@ -33,11 +38,13 @@ function baseAjax(url, type, successCallback, param = null) {
                      */
                     alert('Request dibatalkan, karna suatu alasan. Coba lagi dan pastikan internet Anda stabil!')
                     requestAjax.abort()
+                    _isRequest = false;
                     clearInterval(intervalAjax)
                     $('#loading').css('display', 'none');
                 }
                 if (requestAjax.readyState == 4) {
                     clearInterval(intervalAjax)
+                    _isRequest = false
                 }
             }
         }, 50 * 1000)
@@ -56,12 +63,14 @@ function baseAjax(url, type, successCallback, param = null) {
                 $('#loading').css('display', 'none');
                 if (intervalAjax != undefined && intervalAjax != null) {
                     clearInterval(intervalAjax)
+                    _isRequest = false
                 }
                 if (typeof successCallback == 'function') {
                     successCallback(data);
                 }
             }
         })
+        _isRequest = true
     } catch (error) {
         alert('Terjadi kesalahan saat menjalankan fitur ini, mohon coba lagi')
         console.error(error)
@@ -101,7 +110,7 @@ function formAjax(form, modal = undefined, callbackSuccess, callBackSerialize = 
                 }
             }
         }, 50 * 1000)
-        requestFormAjax = form.ajaxSubmit({
+        return requestFormAjax = form.ajaxSubmit({
             data: param,
             beforeSerialize: function($form, option) {
                 if (typeof callBackSerialize == 'function') {
@@ -185,4 +194,124 @@ function baseSwal(type = 'warning', title, message, timer = 5000) {
     setTimeout(function() {
         $(document).find('.alert-dismissible.fade.show').remove();
     }, timer)
+}
+
+function fillForm(parent = undefined, index = []) {
+    if (parent != undefined) {
+        let triggerTimer;
+        let lastTrigger;
+        $.each(index, function(index, value) {
+            if (value.type == 'input' && value.withTrigger == undefined) { /* [{type:'input',data:value,content:element}] */
+                parent.find(value.content).val(value.data)
+            } else if (value.type == 'input' && value.withTrigger && value.mustTrigger) {
+                $('#loading').css('display', 'block');
+                let timer = setTimeout(function run() {
+                    if (triggerTimer == undefined && !_isRequest && lastTrigger == undefined) {
+                        $('#loading').css('display', 'none');
+                        parent.find(value.content).val(value.data).trigger('change')
+                        clearTimeout(timer)
+                    } else {
+                        timer = setTimeout(run, 500)
+                    }
+                }, 500)
+            } else if (value.type == 'input' && value.withTrigger) {
+                $('#loading').css('display', 'block');
+                let timer = setTimeout(function run() {
+                    if (triggerTimer == undefined && !_isRequest && lastTrigger == undefined) {
+                        $('#loading').css('display', 'none');
+                        parent.find(value.content).val(value.data)
+                        clearTimeout(timer)
+                    } else {
+                        timer = setTimeout(run, 500)
+                    }
+                }, 500)
+            } else if (value.type == 'select' && value.timer == undefined) { /* [{type:'select',data:value,content:element}] */
+                parent.find(value.content).val(value.data).trigger('change')
+            } else if (value.type == 'select' && value.timer != undefined && value.withTrigger == undefined) { /* [{type:'select',data:value,content:element,stop:true,timer:true}] */
+                $('#loading').css('display', 'block');
+                let timer = setTimeout(function run() {
+                    if (parent.find(value.content + ' option').length > 1) {
+                        parent.find(value.content).val(value.data).trigger('change')
+                        clearTimeout(timer)
+                        $('#loading').css('display', 'none');
+                        triggerTimer = undefined;
+                        lastTrigger = undefined;
+                    } else {
+                        triggerTimer = 'running';
+                        lastTrigger = 'running';
+                        timer = setTimeout(run, 500)
+                    }
+                }, 500)
+            } else if (value.type == 'select' && value.timer != undefined && value.withTrigger) {
+                $('#loading').css('display', 'block');
+                let timer = setTimeout(function run() {
+                    if (triggerTimer == undefined && !_isRequest) {
+                        if (parent.find(value.content + ' option').length > 1) {
+                            parent.find(value.content).val(value.data).trigger('change')
+                            clearTimeout(timer)
+                            lastTrigger = undefined;
+                            $('#loading').css('display', 'none');
+                        } else {
+                            lastTrigger = 'running';
+                            timer = setTimeout(run, 500)
+                        }
+                    } else {
+                        lastTrigger = 'running';
+                        timer = setTimeout(run, 500)
+                    }
+                }, 500)
+            } else if (value.type == 'file' && value.addButton != undefined) {
+                if (value.data != null && value.data != '') {
+                    parent.find(value.content).append(`<button type="button" class="ms-2 btn btn-sm btn-primary view-file" data-src="${value.data}" title="Lihat File"><i class="fa fa-file-pdf"></i></button>`)
+                }
+            } else if (value.type == 'file' && value.plugins != undefined) { /* [{type:'file',data:value, content:'element',fname:'file name'}] */
+                if (value.data != null && value.data != '') {
+                    let src = publicURL + 'storage/' + value.data
+                    resetPreview(parent.find(value.content), src, value.fname)
+                } else {
+                    resetPreview(parent.find(value.content), '', '')
+                }
+            } else if (value.type == 'textarea' && value.wysihtml5 == undefined) { /* [{type:'textarea',data:value,content:element}] */
+                parent.find(value.content).text(value.data)
+            } else if (value.type == 'textarea' && value.wysihtml5 != undefined) { /* [{type:'textarea',data:value,content:element,wysihtml5:true}] */
+                parent.find(value.content).data('wysihtml5').editor.setValue(value.data)
+            } else if (value.type == 'checkbox') { /* [{type:'checkbox',data:value,content:element}] */
+                if (value.data) {
+                    parent.find(value.content).prop('checked', true).trigger('change')
+                } else {
+                    parent.find(value.content).removeAttr('checked')
+                }
+            } else if (value.type == 'text') {
+                parent.find(value.content).val(value.data)
+            }
+        })
+    } else {
+        if (container != undefined && content != undefined) {
+            loaderAjax(container, content, false)
+        }
+        console.log('undefined parent');
+    }
+}
+
+function resetForm(parent, index = []) {
+    if (parent != undefined) {
+        $.each(index, function(index, value) {
+            if (value.type == 'select' && value.append == undefined && !value.isRemove) {
+                parent.find(value.content).prop('selectedIndex', 0).trigger('change')
+            } else if (value.type == 'select' && value.append != undefined) {
+                parent.find(value.content).empty().append(value.append).trigger('change')
+            } else if (value.type == 'select' && value.isRemove) {
+                let select = parent.find(value.content)
+                select.parent(value.group).find('.select2-container--default').remove()
+            } else if (value.type == 'file') {
+                resetPreview(parent.find(value.content), '', '')
+            } else if (value.type == 'input' && value.isRemove) {
+                parent.find(value.content).remove()
+            } else if (value.type == 'input') {
+                parent.find(value.content).val(value.data)
+            }
+        })
+    } else {
+        console.log('undefined parent')
+    }
 }

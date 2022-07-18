@@ -72,7 +72,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-floating mb-3">
-                            <input class="form-control" id="nip" type="number" name="nip" placeholder="NIP" required>
+                            <input type="number" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==18) return false;" class="form-control" id="nip" name="nip" placeholder="NIP" required>
                             <label for="nip">NIP</label>
                         </div>
                     </div>
@@ -247,6 +247,10 @@
                             }
                         }
                     ],
+                    columnDefs: [{
+                        targets: '_all',
+                        defaultContent: '<div class="text-center align-middle">-</div>'
+                    }],
                     buttons: [{
                         text: 'Tambah Penilai',
                         className: 'btn btn-success btn-sm text-white',
@@ -255,6 +259,12 @@
                             'data-coreui-toggle': 'modal',
                             'data-coreui-target': '#modalAddPenilai',
                         },
+                    }, {
+                        text: 'Refresh Data',
+                        className: 'btn btn-primary btn-sm text-white',
+                        action: function(){
+                            datatable.ajax.reload()
+                        }
                     }]
                 })
             }

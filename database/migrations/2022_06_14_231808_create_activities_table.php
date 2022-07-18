@@ -20,7 +20,7 @@ class CreateActivitiesTable extends Migration
             $table->decimal('credit')->nullable();
             $table->foreignId('element_id')->constrained('elements');
             $table->foreignId('sub_element_id')->constrained('sub_elements');
-            $table->enum('type', ['TUGAS', 'PPP'])->default('TUGAS');
+            $table->foreignId('position_id')->constrained('positions');
             $table->timestamps();
         });
     }

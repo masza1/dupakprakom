@@ -14,7 +14,7 @@
                     <div class="dropdown-header bg-light py-2">
                         <div class="fw-semibold">{{ auth()->user()->email }}</div>
                     </div>
-                    <a class="dropdown-item" href="{{ route(auth()->user()->level.'.profile.show') }}">
+                    <a class="dropdown-item" href="{{ route('profile.show') }}">
                         <i class="fa fa-user mr-2"></i> Profil
                     </a>
                     <form method="POST" action="{{ route('logout') }}">

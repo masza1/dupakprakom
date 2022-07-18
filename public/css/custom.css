@@ -1,0 +1,100 @@
+.sidebar-static {
+    position: static;
+    z-index: 100;
+    width: 100%;
+}
+
+.sidebar-static.to-fixed {
+    position: fixed !important;
+    top: 0;
+}
+
+.sidebar.sidebar-form-lg .sidebar-header {
+    padding: 0.5rem 1rem !important;
+    background: var(--cui-sidebar-header-bg, rgba(0, 0, 21, 0.29));
+    transition: height .15s, padding .15s;
+    width: var(--cui-sidebar-width);
+}
+
+.sidebar.sidebar-form-lg .bg-transparent {
+    --cui-bg-opacity: 1;
+    background-color: #33385454 !important;
+}
+
+.sidebar.sidebar-form-lg .sidebar-close {
+    position: absolute;
+    top: 5px;
+    width: 3rem;
+    height: 3rem;
+    color: white;
+    background: 0 0;
+    border: 0;
+}
+
+.sidebar.sidebar-form-lg {
+    --cui-sidebar-width: 40rem;
+    overflow-y: auto;
+}
+
+@media(min-width:992px) {
+    .sidebar.sidebar-form-lg:not(.sidebar-end):not(.hide)~* {
+        --cui-sidebar-occupy-start: 40rem
+    }
+    .sidebar.sidebar-form-lg.sidebar-end:not(.hide)~* {
+        --cui-sidebar-occupy-end: 40rem
+    }
+}
+
+@media(max-width:768px) {
+    .sidebar.sidebar-form-lg {
+        --cui-sidebar-width: 30rem
+    }
+    .sidebar.sidebar-form-lg:not(.sidebar-end):not(.hide)~* {
+        --cui-sidebar-occupy-start: 30rem
+    }
+    .sidebar.sidebar-form-lg.sidebar-end:not(.hide)~* {
+        --cui-sidebar-occupy-end: 30rem
+    }
+}
+
+@media (max-width: 767.98px) {
+    html:not([dir=rtl]) .sidebar.sidebar-end:not(.hide) {
+        margin-right: 0 !important;
+    }
+    .sidebar.sidebar-form-lg {
+        --cui-sidebar-width: 100%
+    }
+    .sidebar.sidebar-form-lg:not(.sidebar-end):not(.hide)~* {
+        --cui-sidebar-occupy-start: 100%
+    }
+    .sidebar.sidebar-form-lg.sidebar-end:not(.hide)~* {
+        --cui-sidebar-occupy-end: 100%
+    }
+}
+
+
+/* html:not([dir=rtl]) .offcanvas-end {
+    right: 0;
+    border-left: 2px solid rgba(0, 0, 21, .2);
+    transform: translateX(1%);
+} */
+
+.overflow-y-auto {
+    overflow-y: auto;
+}
+
+.offcanvas-sm {
+    --cui-offcanvas-width: 300px;
+}
+
+.offcanvas-md {
+    --cui-offcanvas-width: 500px;
+}
+
+.offcanvas-lg {
+    --cui-offcanvas-width: 800px;
+}
+
+.offcanvas-xl {
+    --cui-offcanvas-width: 1140px;
+}
