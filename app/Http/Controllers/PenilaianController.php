@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DetailActivity;
-use App\Models\DetailPenActivity;
+use App\Models\Employee;
 use App\Models\Submission;
 use Illuminate\Http\Request;
+use App\Models\DetailActivity;
+use App\Models\DetailPenActivity;
+use App\Models\Tanda;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
-
+use PDF;
 class PenilaianController extends Controller
 {
     protected $submission;
@@ -30,7 +32,7 @@ class PenilaianController extends Controller
 
         return view('penilai.index');
     }
-   
+
     public function indexRiwayat()
     {
         if (request()->ajax()) {
@@ -84,7 +86,7 @@ class PenilaianController extends Controller
         if ($this->submission->where('id', $submission_id)->update($validated)) {
             if ($request->status == 'REVISI' || $request->status == 'TOLAK') {
                 return redirect()->route('penilai.index')->with('success', 'Berhasil menyimpan data');
-            }else if($request->status == 'TELAH DINILAI'){
+            } else if ($request->status == 'TELAH DINILAI') {
                 return redirect()->route('penilai.index')->with('success', 'Berhasil menyimpan data');
             }
             return back()->with('success', 'Berhasil menyimpan data pengajuan');
@@ -97,10 +99,10 @@ class PenilaianController extends Controller
     {
         $model = null;
         $datatable = null;
-        if($request->type == 'utama'){
+        if ($request->type == 'utama') {
             $model = $this->detail;
             $datatable = 'datatableDetail';
-        }else {
+        } else {
             $datatable = 'datatableDetailPen';
             $model = $this->detailPen;
         }
@@ -112,7 +114,7 @@ class PenilaianController extends Controller
         $validated += ["bukti1_valid" => $request->bukti1_valid != null ? true : false];
         $validated += ["bukti2_valid" => $request->bukti2_valid != null ? true : false];
         $validated += ["bukti3_valid" => $request->bukti3_valid != null ? true : false];
-        if($model->where('submission_id', $submission_id)->where('id', $id)->update($validated)){
+        if ($model->where('submission_id', $submission_id)->where('id', $id)->update($validated)) {
             return [
                 'status' => true,
                 'message' => 'Berhasil menyimpan data',
@@ -121,5 +123,55 @@ class PenilaianController extends Controller
         }
 
         return abort(404, 'Gagal menyimpan data');
+    }
+
+    public function cetak($submission_id, $employee_id)
+    {
+        $employee = Employee::with('unit', 'group', 'position')->find($employee_id);
+        $tanda = [];
+        if($tanda = Tanda::first()){}
+        else
+            $tanda = new Tanda();
+        $newSubmission = $this->submission->with(['detail_activities' => function ($q) {
+            $q->select('detail_activities.id', 'detail_activities.submission_id', 'ac.id as activity_id', 'el.id as element_id', DB::raw('sum(detail_activities.approve_credit) as grand_total_credit'))
+                ->join('activities as ac', 'ac.id', '=', 'detail_activities.activity_id')
+                ->join('elements as el', 'el.id', '=', 'ac.element_id')
+                ->groupBy('element_id');
+        }, 'detail_pen_activities' => function ($q) {
+            $q->select('detail_pen_activities.id', 'detail_pen_activities.submission_id', 'ac.id as pen_activity_id', 'el.id as element_id', DB::raw('sum(detail_pen_activities.approve_credit) as grand_total_credit'))
+                ->join('pen_activities as ac', 'ac.id', '=', 'detail_pen_activities.pen_activity_id')
+                ->join('elements as el', 'el.id', '=', 'ac.element_id')
+                ->groupBy('element_id');
+        }])
+            ->where('id', $submission_id)
+            ->first();
+        $oldSubmission = $this->submission->with(['detail_activities' => function ($q) {
+            $q->select('detail_activities.id', 'detail_activities.submission_id', 'ac.id as activity_id', 'el.id as element_id', DB::raw('sum(detail_activities.approve_credit) as grand_total_credit'))
+                ->join('activities as ac', 'ac.id', '=', 'detail_activities.activity_id')
+                ->join('elements as el', 'el.id', '=', 'ac.element_id')
+                ->groupBy('element_id');
+        }, 'detail_pen_activities' => function ($q) {
+            $q->select('detail_pen_activities.id', 'detail_pen_activities.submission_id', 'ac.id as pen_activity_id', 'el.id as element_id', DB::raw('sum(detail_pen_activities.approve_credit) as grand_total_credit'))
+                ->join('pen_activities as ac', 'ac.id', '=', 'detail_pen_activities.pen_activity_id')
+                ->join('elements as el', 'el.id', '=', 'ac.element_id')
+                ->groupBy('element_id');
+        }])
+            ->where('id', '<', $submission_id)
+            ->where('employee_id', $employee_id)
+            ->where('status', 'TELAH DINILAI')
+            ->orderBy('id', 'DESC')
+            ->first();
+
+        $data = [
+            'newSubmission' => $newSubmission,
+            'oldSubmission' => $oldSubmission,
+            'employee' => $employee,
+            'tanda' => $tanda,
+        ];
+        // return $data;
+        $pdf = PDF::loadView('sekretariat.cetak', $data);
+        $pdf->set_paper('legal', 'potrait');
+        return $pdf->stream('Halloo.pdf');
+        // return view('sekretariat.cetak', compact('newSubmission', 'oldSubmission', 'employee'));
     }
 }

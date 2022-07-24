@@ -133,6 +133,69 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="tmt" type="date" name="tmt" placeholder="Tempat Lahir" required>
+                            <label for="tmt">TMT</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <select id="jenjang_pendidikan" name="jenjang_pendidikan" class="form-control" required>
+                                <option value="" selected disabled>-- Pilih Jenjang Pendidikan --</option>
+                                <option value="SD">SD</option>
+                                <option value="SMP">SMP</option>
+                                <option value="SMA/SMK">SMA/SMK</option>
+                                <option value="D1">D1</option>
+                                <option value="D2">D2</option>
+                                <option value="D3">D3</option>
+                                <option value="D4">D4</option>
+                                <option value="S1">S1</option>
+                                <option value="S2">S2</option>
+                                <option value="S3">S3</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="institusi" type="text" name="institusi" placeholder="Tempat Lahir" required>
+                            <label for="institusi">Institusi</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="">Masa Kerja Lama</label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" id="tahun_lama" type="number" name="tahun_lama" step="1" min="0" max="" placeholder="Tempat Lahir" required>
+                                    <label for="tahun_lama">Tahun</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" id="bulan_lama" type="number" name="bulan_lama" step="1" min="1" max="12" placeholder="Tempat Lahir" required>
+                                    <label for="bulan_lama">Bulan</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="">Masa Kerja Baru</label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" id="tahun_baru" type="number" name="tahun_baru" step="1" min="0" max="" placeholder="Tempat Lahir" required>
+                                    <label for="tahun_baru">Tahun</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" id="bulan_baru" type="number" name="bulan_baru" step="1" min="1" max="12" placeholder="Tempat Lahir" required>
+                                    <label for="bulan_baru">Bulan</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -287,15 +350,96 @@
                     modal.find('input[type="password"]').removeAttr('required')
 
                     baseAjax(url, 'GET', function(response) {
-                        modal.find('input[name="email"]').val(response.email)
-                        modal.find('input[name="nip"]').val(response.employee.nip)
-                        modal.find('input[name="name"]').val(response.employee.name)
-                        modal.find('input[name="birthplace"]').val(response.employee.birthplace)
-                        modal.find('input[name="birthdate"]').val(response.employee.birthdate)
-                        modal.find('select[name="gender"]').val(response.employee.gender).trigger('change')
-                        modal.find('select[name="group_id"]').val(response.employee.group_id).trigger('change')
-                        modal.find('select[name="position_id"]').val(response.employee.position_id).trigger('change')
-                        modal.find('select[name="unit_id"]').val(response.employee.unit_id).trigger('change')
+                        // modal.find('input[name="email"]').val(response.email)
+                        // modal.find('input[name="nip"]').val(response.employee.nip)
+                        // modal.find('input[name="name"]').val(response.employee.name)
+                        // modal.find('input[name="birthplace"]').val(response.employee.birthplace)
+                        // modal.find('input[name="birthdate"]').val(response.employee.birthdate)
+                        // modal.find('select[name="gender"]').val(response.employee.gender).trigger('change')
+                        // modal.find('select[name="group_id"]').val(response.employee.group_id).trigger('change')
+                        // modal.find('select[name="position_id"]').val(response.employee.position_id).trigger('change')
+                        // modal.find('select[name="unit_id"]').val(response.employee.unit_id).trigger('change')
+                        fillForm(form, [{
+                                type: 'input',
+                                content: 'input[name="email"]',
+                                data: response.email,
+                            },
+                            {
+                                type: 'input',
+                                content: 'input[name="nip"]',
+                                data: response.employee.nip,
+                            },
+                            {
+                                type: 'input',
+                                content: 'input[name="name"]',
+                                data: response.employee.name,
+                            },
+                            {
+                                type: 'input',
+                                content: 'input[name="birthplace"]',
+                                data: response.employee.birthplace,
+                            },
+                            {
+                                type: 'input',
+                                content: 'input[name="birthdate"]',
+                                data: response.employee.birthdate,
+                            },
+                            {
+                                type: 'select',
+                                content: 'select[name="gender"]',
+                                data: response.employee.gender,
+                            },
+                            {
+                                type: 'select',
+                                content: 'select[name="group_id"]',
+                                data: response.employee.group_id,
+                            },
+                            {
+                                type: 'select',
+                                content: 'select[name="position_id"]',
+                                data: response.employee.position_id,
+                            },
+                            {
+                                type: 'select',
+                                content: 'select[name="unit_id"]',
+                                data: response.employee.unit_id,
+                            },
+                            {
+                                type: 'select',
+                                content: 'select[name="jenjang_pendidikan"]',
+                                data: response.employee.jenjang_pendidikan,
+                            },
+                            {
+                                type: 'input',
+                                content: 'input[name="institusi"]',
+                                data: response.employee.institusi,
+                            },
+                            {
+                                type: 'input',
+                                content: 'input[name="tmt"]',
+                                data: response.employee.tmt,
+                            },
+                            {
+                                type: 'input',
+                                content: 'input[name="bulan_lama"]',
+                                data: response.employee.bulan_lama,
+                            },
+                            {
+                                type: 'input',
+                                content: 'input[name="tahun_lama"]',
+                                data: response.employee.tahun_lama,
+                            },
+                            {
+                                type: 'input',
+                                content: 'input[name="bulan_baru"]',
+                                data: response.employee.bulan_baru,
+                            },
+                            {
+                                type: 'input',
+                                content: 'input[name="tahun_baru"]',
+                                data: response.employee.tahun_baru,
+                            },
+                        ])
                     })
                 } else {
                     modal.find('input[type="password"]').prop('required', true)

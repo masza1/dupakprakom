@@ -29,7 +29,7 @@ class ActivityController extends Controller
             }, 'element', 'sub_element']);
             return Datatables::of($activites)->make(true);
         }
-        $positions = Position::get();
+        // $positions = Position::get();
         $elements = Element::get();
         return view('sekretariat.kegiatan.kegiatan-tugas', compact('elements', 'positions'));
     }

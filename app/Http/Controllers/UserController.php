@@ -29,7 +29,7 @@ class UserController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            if(request()->tab == 'prakom'){
+            if (request()->tab == 'prakom') {
                 $users = $this->modelGetAll(['employee' => function ($q) {
                     $q->with(['unit', 'group', 'position']);
                 }])->where('level', 'prakom');
@@ -40,13 +40,10 @@ class UserController extends Controller
             }])->where('level', 'penilai');
             return Datatables::of($users)->make(true);
         }
-        $units = Unit::get();
-        $groups = Group::get();
-        $positions = Position::get();
-        if(request()->tab == 'prakom'){
-            return view('sekretariat.users.prakom', compact('positions', 'groups', 'units'));
+        if (request()->tab == 'prakom') {
+            return view('sekretariat.users.prakom');
         }
-        return view('sekretariat.users.index', compact('positions', 'groups', 'units'));
+        return view('sekretariat.users.index');
     }
 
     /**
@@ -74,7 +71,7 @@ class UserController extends Controller
         $validatedUser['password'] = Hash::make($validatedUser['password']);
 
         $validatedDetail = $request->validate([
-            "nip" => ['required', 'numeric'],
+            "nip" => ['required', 'numeric', 'digits:18'],
             "name" => ['required', 'string', 'max:100'],
             "birthplace" => ['required', 'string', 'max:150'],
             "birthdate" => ['required', 'date'],
@@ -84,9 +81,18 @@ class UserController extends Controller
             "unit_id" => ['required', 'numeric']
         ]);
 
-        if($request->tab == 'prakom'){
+        if ($request->tab == 'prakom') {
+            $validatedDetail += $request->validate([
+                "jenjang_pendidikan" => ['required', 'string', 'max:100'],
+                "institusi" => ['required', 'string', 'max:255'],
+                "tmt" => ['required', 'date'],
+                "bulan_lama" => ['required', 'numeric'],
+                "tahun_lama" => ['required', 'numeric'],
+                "bulan_baru" => ['required', 'numeric'],
+                "tahun_baru" => ['required', 'numeric'],
+            ]);
             $validatedUser += ['level' => 'prakom'];
-        }else{
+        } else {
             $validatedUser += ['level' => 'penilai'];
         }
         DB::beginTransaction();
@@ -114,7 +120,7 @@ class UserController extends Controller
     public function show($id)
     {
         if (request()->tab == 'prakom') {
-            if ($data = User::with('employee')->where('level', 'penilai')->where('id', $id)->first()) {
+            if ($data = User::with('employee')->where('level', 'prakom')->where('id', $id)->first()) {
                 return $data;
             }
         } else {
@@ -147,13 +153,13 @@ class UserController extends Controller
     {
         $user = $this->modelFind($id);
         $validatedUser = [];
-        if($user->email != $request->email){
+        if ($user->email != $request->email) {
             $validatedUser += $request->validate([
                 "email" => ['required', 'string', 'email', 'max:255', 'unique:users'],
             ]);
         }
 
-        if($request->password != null || $request->password_confirmation != null){
+        if ($request->password != null || $request->password_confirmation != null) {
             $validatedUser += $request->validate([
                 "password" => ['required', 'confirmed', Password::default()],
             ]);
@@ -161,18 +167,30 @@ class UserController extends Controller
         }
 
         $validatedDetail = $request->validate([
-            "nip" => ['required', 'numeric'],
+            "nip" => ['required', 'numeric', 'digits:18'],
             "name" => ['required', 'string', 'max:100'],
             "birthplace" => ['required', 'string', 'max:150'],
             "birthdate" => ['required', 'date'],
             "gender" => ['required', 'in:L,P'],
             "group_id" => ['required', 'numeric'],
             "position_id" => ['required', 'numeric'],
-            "unit_id" => ['required', 'numeric']
+            "unit_id" => ['required', 'numeric'],
         ]);
+
+        if (auth()->user()->level == 'prakom') {
+            $validatedDetail += $request->validate([
+                "jenjang_pendidikan" => ['required', 'string', 'max:100'],
+                "institusi" => ['required', 'string', 'max:255'],
+                "tmt" => ['required', 'date'],
+                "bulan_lama" => ['required', 'numeric'],
+                "tahun_lama" => ['required', 'numeric'],
+                "bulan_baru" => ['required', 'numeric'],
+                "tahun_baru" => ['required', 'numeric'],
+            ]);
+        }
         DB::beginTransaction();
         try {
-            if(!empty($validatedUser)){
+            if (!empty($validatedUser)) {
                 $user->update($validatedUser);
             }
             $user->employee()->update($validatedDetail);

@@ -15,7 +15,15 @@ class Employee extends Model
         'unit_id',
         'birthplace',
         'birthdate',
-        'gender'
+        'gender',
+        'jenjang_pendidikan',
+        'institusi',
+        'no_karpeg',
+        'tmt',
+        'bulan_lama',
+        'tahun_lama',
+        'bulan_baru',
+        'tahun_baru'
     ];
 
     public function user(){

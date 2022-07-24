@@ -38,6 +38,21 @@
                     </div> Periode DUPAK
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('sekretariat.tanda-tangan') ? 'active' : '' }}" href="{{ route('sekretariat.tanda-tangan') }}">
+                    <div class="nav-icon">
+                        <i class="fa fa-id-card"></i>
+                    </div> Tanda Tangan
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('sekretariat.index-riwayat') ? 'active' : '' }}" href="{{ route('sekretariat.index-riwayat') }}">
+                    <span class="nav-icon">
+                        <i class="fa fa-list-alt"></i>
+                    </span>
+                    Riyawat Pengajuan
+                </a>
+            </li>
             <li class="nav-group">
                 <a class="nav-link nav-group-toggle" href="#">
                     <div class="nav-icon">
@@ -83,29 +98,12 @@
                 </a>
             </li>
         @elseif (auth()->user()->level == 'penilai')
-            <li class="nav-group">
-                <a class="nav-link nav-group-toggle" href="#">
-                    <div class="nav-icon">
-                        <i class="fa fa-sticky-note"></i>
-                    </div> DUPAK
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('penilai.index') }}">
+                    <span class="nav-icon">
+                        <i class="fa fa-paper-plane"></i>
+                    </span>Daftar Pengajuan
                 </a>
-                <ul class="nav-group-items">
-                    <li class="nav-item" style="padding-left: 10px">
-                        <a class="nav-link" href="{{ route('penilai.index') }}">
-                            <span class="nav-icon">
-                                <i class="fa fa-paper-plane"></i>
-                            </span>Daftar Pengajuan
-                        </a>
-                    </li>
-                    <li class="nav-item" style="padding-left: 10px">
-                        <a class="nav-link" href="{{ route('penilai.index-riwayat') }}">
-                            <span class="nav-icon">
-                                <i class="fa fa-list-alt"></i>
-                            </span>
-                            Riyawat Pengajuan
-                        </a>
-                    </li>
-                </ul>
             </li>
         @elseif (auth()->user()->level == 'prakom')
             <li class="nav-group">

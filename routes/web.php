@@ -12,6 +12,7 @@ use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\SubUnsurController;
 use App\Http\Controllers\UnsurController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('test-db', function(){
+    return DB::table('DBKOTA')->get();
+});
 
 Route::get('/', function () {
     return 'Welcome';
@@ -32,6 +36,7 @@ Route::get('/', function () {
 Route::get('test-ui', function(){
     return view('test-ui');
 });
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -61,11 +66,9 @@ Route::prefix('prakom')->name('prakom.')->middleware('auth')->group(function () 
 Route::prefix('penilai')->name('penilai.')->middleware('auth')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'penilai'])->name('dashboard');
     Route::get('pengajuan', [PenilaianController::class, 'index'])->name('index');
-    Route::get('riwayat-pengajuan', [PenilaianController::class, 'indexRiwayat'])->name('index-riwayat');
     Route::put('pengajuan/{id}', [PenilaianController::class, 'nilaiPengajuan'])->name('nilai-pengajuan');
     Route::put('pengajuan/{submission_id}/detail/{id}', [PenilaianController::class, 'nilaiDetail'])->name('nilai-detail');
-    Route::get('pengajuan/{submission_id}/detail/{id}/cetak', [PenilaianController::class, 'cetak'])->name('cetak-pengajuan');
-
+    
 });
 
 // sekretariat
@@ -73,6 +76,11 @@ Route::prefix('sekretariat')->name('sekretariat.')->middleware('auth')->group(fu
     Route::get('dashboard', [DashboardController::class, 'sekretariat'])->name('dashboard');
     Route::get('periode', [DashboardController::class, 'getPeriode'])->name('periode.index');
     Route::post('periode', [DashboardController::class, 'storePeriode']);
+    Route::get('tanda-tangan', [DashboardController::class, 'getTTD'])->name('tanda-tangan');
+    Route::post('tanda-tangan', [DashboardController::class, 'storeTTD']);
+    
+    Route::get('riwayat-pengajuan', [PenilaianController::class, 'indexRiwayat'])->name('index-riwayat');
+    Route::get('pengajuan/{submission_id}/{employee_id}/cetak', [PenilaianController::class, 'cetak'])->name('cetak-pengajuan');
 
     Route::resource('activities', ActivityController::class)->parameters(['activities' => 'id'])->names('activities');
     Route::resource('pen-activities', PenActivityController::class)->parameters(['pen-activities' => 'id'])->names('pen-activities');

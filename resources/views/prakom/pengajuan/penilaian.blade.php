@@ -344,13 +344,16 @@
 
             var user_level = '{{ auth()->user()->level }}'
             if (user_level == 'prakom' || user_level == 'admin') {
-                $(document).find('button[type="submit"]').remove()
+                $(document).find('#canvasAddKegiatan button[type="submit"]').remove()
+                $(document).find('.body form button[type="submit"]').remove()
                 $(document).find('.body form').removeAttr('action')
                 $(document).find('.body form').removeAttr('method')
-                $(document).find('.offcanvas form').removeAttr('action')
-                $(document).find('.offcanvas form').removeAttr('method')
-                $(document).find('input').prop('disabled', true)
-                $(document).find('textarea').prop('disabled', true)
+                $(document).find('#canvasAddKegiatan form').removeAttr('action')
+                $(document).find('#canvasAddKegiatan form').removeAttr('method')
+                $(document).find('#canvasAddKegiatan input').prop('disabled', true)
+                $(document).find('#canvasAddKegiatan textarea').prop('disabled', true)
+                $(document).find('.body input').prop('disabled', true)
+                $(document).find('.body textarea').prop('disabled', true)
             }
 
             var initial = {};
@@ -670,7 +673,7 @@
                                 })
                                 form.find(`button#${val}`).attr('data-src', eval(tempVal))
                                 if (eval(tempBool)) {
-                                    form.find(`input[name="${bools[idx]}"]`).props('checked', true)
+                                    form.find(`input[name="${bools[idx]}"]`).prop('checked', true)
                                 } else {
                                     form.find(`input[name="${bools[idx]}"]`).removeAttr('checked')
                                 }

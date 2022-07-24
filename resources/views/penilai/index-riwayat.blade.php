@@ -36,7 +36,7 @@
     <script>
         $(document).ready(function() {
             var initial = {}
-            var datatableURL = '{{ route('penilai.index-riwayat') }}'
+            var datatableURL = '{{ route('sekretariat.index-riwayat') }}'
             var datatable;
 
             initialDatatable(initial);
@@ -121,7 +121,10 @@
                             searchable: false,
                             render: function(data, type, row) {
                                 let html = '';
-                                let tempURL = '{{  }}'
+                                let tempURL = '{{ route('sekretariat.cetak-pengajuan', ['submission_id' => ' ', 'employee_id' => ' ']) }}'
+                                tempURL = tempURL.replace('%20', data.id)
+                                tempURL = tempURL.replace('%20', data.employee.id)
+                                html += `<a type="button" class="btn btn-sm btn-primary btnCetak" href="${tempURL}" target="_blank"><i class="fa fa-file-pdf"></i></a>`
                                 return html;
                             }
                         }

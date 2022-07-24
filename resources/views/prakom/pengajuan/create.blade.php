@@ -647,8 +647,7 @@
                     e.preventDefault();
 
                     formAjax($(this), undefined, function(data, status, jqxhr, form) {
-                        eval(data.datatable).ajax.reload()
-                        $('#canvasAddKegiatan').find('.btn-close').trigger('click')
+                        $('#canvasEditProfile').find('.btn-close').trigger('click')
                     })
                 })
 

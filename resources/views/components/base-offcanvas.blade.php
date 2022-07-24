@@ -29,8 +29,7 @@
     @endif
 </div> --}}
 
-<div class="offcanvas offcanvas-lg offcanvas-end overflow-y-auto" tabindex="-1" {{ $attributes->only('id') }} aria-labelledby="{{ $attributes->get('id') }}RightLabel"
-    {{ isset($isScroll) ? 'data-coreui-scroll=true' : '' }}>
+<div class="offcanvas offcanvas-lg offcanvas-end overflow-y-auto" tabindex="-1" {{ $attributes->only('id') }} aria-labelledby="{{ $attributes->get('id') }}RightLabel">
     @if (isset($withForm))
         <form method="POST" {{ isset($isFile) ? 'enctype="multipart/form-data"' : '' }} id="{{ $formId ?? '' }}">
             @csrf
