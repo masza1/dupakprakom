@@ -13,8 +13,8 @@
                                 <form method="POST" action="{{ route('login') }}" class="mt-4">
                                     @csrf
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="email" type="email" name="email" placeholder="name@example.com" value="{{ old('email') }}">
-                                        <label for="email">Email</label>
+                                        <input class="form-control" id="username" type="text" name="username" placeholder="name@example.com" value="{{ old('username') }}">
+                                        <label for="username">Username</label>
                                     </div>
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="password" type="Password" name="password" placeholder="password">

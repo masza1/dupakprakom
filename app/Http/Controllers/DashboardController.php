@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Periode;
+use App\Models\Submission;
 use App\Models\Tanda;
+use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
@@ -11,15 +13,46 @@ class DashboardController extends Controller
 {
     public function sekretariat()
     {
-        return view('sekretariat.dashboard');
+        $submissions = Submission::select('status')->get()->groupBy(function ($q) {
+            return $q->status;
+        })->map(function ($q) {
+            return $q->count();
+        });
+        $total = 0;
+        if(count($submissions) > 0)
+        $total = array_sum($submissions->toArray());
+        
+        $users = User::orwhere('level', 'penilai')->orwhere('level', 'prakom')->get()->groupBy(function ($q) {
+            return $q->level;
+        })->map(function ($q) {
+            return $q->count();
+        })->toArray();
+        // return $users['prakom'];
+        return view('sekretariat.dashboard', compact('submissions', 'total','users'));
     }
     public function penilai()
     {
-        return view('penilai.dashboard');
+        $submissions = Submission::select('status')->get()->groupBy(function ($q) {
+            return $q->status;
+        })->map(function ($q) {
+            return $q->count();
+        });
+        $total = 0;
+        if(count($submissions) > 0)
+        $total = array_sum($submissions->toArray());
+        return view('penilai.dashboard', compact('submissions', 'total'));
     }
     public function prakom()
     {
-        return view('prakom.dashboard');
+        $submissions = Submission::select('status')->get()->groupBy(function ($q) {
+            return $q->status;
+        })->map(function ($q) {
+            return $q->count();
+        });
+        $total = 0;
+        if(count($submissions) > 0)
+        $total = array_sum($submissions->toArray());
+        return view('prakom.dashboard', compact('submissions', 'total'));
     }
 
     public function getPeriode()

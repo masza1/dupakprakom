@@ -49,10 +49,16 @@
                         <div class="card-header">Akun</div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="email" type="email" name="email" placeholder="Nama Penilai" readonly>
                                         <label for="email">Email</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="username" type="text" name="username" placeholder="Nama Penilai" readonly>
+                                        <label for="username">Username</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -289,6 +295,11 @@
                             },
                             {
                                 type: 'input',
+                                content: 'input[name="username"]',
+                                data: employee.username,
+                            },
+                            {
+                                type: 'input',
                                 content: 'input[name="nip"]',
                                 data: employee.employee.nip,
                             },
@@ -369,7 +380,8 @@
                         e.preventDefault();
 
                         formAjax($(this), undefined, function(data, status, jqxhr, form) {
-                            $('#canvasAddKegiatan').find('.btn-close').trigger('click')
+                            baseSwal('success','Success', 'Data berhasil diubah')
+                            $('#canvasEditProfile').find('.btn-close').trigger('click')
                         })
                     })
                 })

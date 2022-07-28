@@ -18,6 +18,7 @@ class CreateSubmissionsTable extends Migration
             $table->foreignId('employee_id')->constrained('employees');
             $table->string('number', 50)->nullable();
             $table->date('submission_date')->nullable();
+            $table->enum('semester', ['Semester 1', 'Semester 2'])->default('Semester 1');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->string('surat_pengantar', 255)->nullable();

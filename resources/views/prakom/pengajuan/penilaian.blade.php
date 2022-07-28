@@ -164,6 +164,7 @@
                                     <th class="text-center text-uppercase" style="width: 10%">Output</th>
                                     <th class="text-center text-uppercase" style="width: 10%">Jumlah</th>
                                     <th class="text-center text-uppercase" style="width: 10%">Angka Kredit</th>
+                                    <th class="text-center text-uppercase" style="width: 10%">Kredit Disetujui</th>
                                     <th class="text-center text-uppercase" style="width: 10%">Aksi</th>
                                 </tr>
                             </thead>
@@ -187,6 +188,7 @@
                                     <th class="text-center text-uppercase" style="width: 10%">Output</th>
                                     <th class="text-center text-uppercase" style="width: 10%">Jumlah</th>
                                     <th class="text-center text-uppercase" style="width: 10%">Angka Kredit</th>
+                                    <th class="text-center text-uppercase" style="width: 10%">Kredit Disetujui</th>
                                     <th class="text-center text-uppercase" style="width: 10%">Aksi</th>
                                 </tr>
                             </thead>
@@ -361,18 +363,39 @@
             var kegiatanPenUrl = '{{ route('prakom.detail-kegitan-pen.index', ['submission' => ' ']) }}';
             kegiatanUrl = kegiatanUrl.replace('%20', '{{ $submission->id }}')
             kegiatanPenUrl = kegiatanPenUrl.replace('%20', '{{ $submission->id }}')
-            var datatableDetail, datatableDetailPen;
+            var datatableDetail, datatableDetailPen, grand_total_approve = 0;
             var customRowDetail =
                 '<tr>' +
                 '<td colspan="5" class="text-left align-middle fw-bold">Jumlah Angka Kredit Kegiatan Tugas</td>' +
                 '<td class="align-middle fw-bold grand_total">-</td>' +
+                '<td class="align-middle fw-bold"></td>' +
+                '<td></td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td colspan="5" class="text-left align-middle fw-bold">Jumlah Kredit Disetujui Kegiatan Tugas</td>' +
+                '<td class="align-middle fw-bold"></td>' +
+                '<td class="align-middle fw-bold grand_approve">-</td>' +
                 '<td></td>' +
                 '</tr>'
+
             var customRowDetailPen =
                 '<tr>' +
                 '<td colspan="5" class="text-left align-middle fw-bold">Jumlah Angka Kredit Kegiatan Penunjang</td>' +
                 '<td class="align-middle fw-bold grand_total">-</td>' +
-                '<td>-</td>' +
+                '<td class="align-middle fw-bold"></td>' +
+                '<td></td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td colspan="5" class="text-left align-middle fw-bold">Jumlah Kredit Disetujui Kegiatan Penunjang</td>' +
+                '<td class="align-middle fw-bold"></td>' +
+                '<td class="align-middle fw-bold grand_approve">-</td>' +
+                '<td></td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td colspan="5" class="text-left align-middle fw-bold">Grand Total Kredit Disetujui</td>' +
+                '<td class="align-middle fw-bold"></td>' +
+                '<td class="align-middle fw-bold grand_total_approve"></td>' +
+                '<td></td>' +
                 '</tr>'
 
 
@@ -450,6 +473,12 @@
                             searchable: true,
                         },
                         {
+                            className: 'align-middle border-bottom',
+                            data: 'approve_credit',
+                            orderable: true,
+                            searchable: true,
+                        },
+                        {
                             className: 'align-middle text-center border-bottom',
                             data: null,
                             orderable: false,
@@ -481,6 +510,10 @@
                                 table.find('.grand_total').text(0.00)
                             } else {
                                 table.find('.grand_total').text(datatable.ajax.json().data[0].grand_total_credit.toFixed(2))
+                                table.find('.grand_approve').text(datatable.ajax.json().data[0].grand_total_approve.toFixed(2))
+                                grand_total_approve += datatable.ajax.json().data[0].grand_total_approve
+
+                                $('#datatableDetailActivityPen').find('.grand_total_approve').text(grand_total_approve)
                             }
                         }
                     }
@@ -696,6 +729,7 @@
                 e.preventDefault();
 
                 formAjax($(this), undefined, function(data, status, jqxhr, form) {
+                    baseSwal('success', 'Success', 'Data berhasil disimpan')
                     eval(data.datatable).ajax.reload()
                     $('#canvasAddKegiatan').find('.btn-close').trigger('click')
                 })

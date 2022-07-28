@@ -31,7 +31,7 @@ class ActivityController extends Controller
         }
         // $positions = Position::get();
         $elements = Element::get();
-        return view('sekretariat.kegiatan.kegiatan-tugas', compact('elements', 'positions'));
+        return view('sekretariat.kegiatan.kegiatan-tugas', compact('elements'));
     }
 
     /**

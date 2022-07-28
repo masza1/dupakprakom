@@ -15,6 +15,7 @@
                                     <th class="text-center text-uppercase" style="width: 5%">Nomor</th>
                                     <th class="text-center text-uppercase" style="width: 10%">Tanggal Pengajuan</th>
                                     <th class="text-center text-uppercase" style="width: 10%">Nama Pegawai</th>
+                                    <th class="text-center text-uppercase" style="width: 10%">Semester</th>
                                     <th class="text-center text-uppercase" style="width: 10%">Masa Awal</th>
                                     <th class="text-center text-uppercase" style="width: 10%">Masa Akhir</th>
                                     <th class="text-center text-uppercase" style="width: 10%">Status</th>
@@ -93,6 +94,12 @@
                         {
                             className: 'align-middle border-bottom',
                             data: 'employee.name',
+                            orderable: true,
+                            searchable: true,
+                        },
+                        {
+                            className: 'align-middle border-bottom',
+                            data: 'semester',
                             orderable: true,
                             searchable: true,
                         },

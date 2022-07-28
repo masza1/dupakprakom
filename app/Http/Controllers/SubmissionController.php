@@ -37,15 +37,9 @@ class SubmissionController extends Controller
      */
     public function create()
     {
-        /* if ($periode = Periode::first()) {
-            if ($periode->start_date <= date('Y-m-d') && $periode->end_date >= date('Y-m-d')) {
-            }
-        } */
-
         $submission =  new Submission();
 
         return view('prakom.pengajuan.create', compact('submission'));
-        // return back()->withErrors(['message' => 'Maaf belum saatnya periode pengajuan']);
     }
 
     /**
@@ -79,11 +73,11 @@ class SubmissionController extends Controller
         $validated['spmk'] = $this->storeFile('spmk', 'pengajuan');
         $files += $validated;
         $validated += ['employee_id' => auth()->user()->employee->id];
-        $pengajuan = $this->model->where('number', '<>', '')->first();
+        $pengajuan = $this->model->where('number', '<>', '')->orderby('number', 'DESC')->first();
         if (!empty($pengajuan)) {
             $number = $pengajuan->number;
             $number = substr($number, 3);
-            $validated += ['number' => $number + 1];
+            $validated += ['number' => 'DPK'. ($number + 1)];
         } else {
             $validated += ['number' => 'DPK1000001'];
         }
@@ -152,8 +146,9 @@ class SubmissionController extends Controller
                     $validated += ['status' => 'PENGAJUAN'];
                     $validated += ['start_date' => $periode->start_date];
                     $validated += ['end_date' => $periode->end_date];
+                    $validated += ['semester' => $periode->semester];
                     if ($this->modelUpdate($validated, $id)) {
-                        return back()->with('success', 'Berhhasil mengubah data');
+                        return back()->with('success', 'Berhasil mengubah data');
                     }
                 }
             }
@@ -186,12 +181,6 @@ class SubmissionController extends Controller
                     }
                 }
             }
-            // $validated += ['employee_id' => auth()->user()->employee->id];
-            // $validated += ['submission_date' => date('Y-m-d')];
-
-            // $periode = Periode::first();
-            // $validated += ['start_date' => $periode->start_date];
-            // $validated += ['end_date' => $periode->end_date];
 
             if ($submission->update($validated)) {
                 foreach ($files as $value) {

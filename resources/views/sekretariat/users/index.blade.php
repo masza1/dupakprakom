@@ -16,6 +16,7 @@
                                     <th class="text-center text-uppercase" style="width: 10%">NIP</th>
                                     <th class="text-center text-uppercase" style="width: 15%">Nama</th>
                                     <th class="text-center text-uppercase" style="width: 15%">Email</th>
+                                    <th class="text-center text-uppercase" style="width: 15%">Username</th>
                                     <th class="text-center text-uppercase" style="width: 15%">Golongan</th>
                                     <th class="text-center text-uppercase" style="width: 15%">Peringkat</th>
                                     <th class="text-center text-uppercase" style="width: 15%">Jabatan</th>
@@ -45,10 +46,16 @@
             <div class="card-header">Akun</div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="form-floating mb-3">
                             <input class="form-control" id="email" type="email" name="email" placeholder="Nama Penilai" required>
                             <label for="email">Email</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="username" type="text" name="username" placeholder="Nama Penilai" required>
+                            <label for="username">Username</label>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -212,6 +219,12 @@
                         },
                         {
                             className: 'align-middle border-bottom',
+                            data: 'username',
+                            orderable: true,
+                            searchable: true,
+                        },
+                        {
+                            className: 'align-middle border-bottom',
                             data: 'employee.group.group_name',
                             orderable: true,
                             searchable: true,
@@ -288,6 +301,7 @@
 
                     baseAjax(url, 'GET', function(response) {
                         modal.find('input[name="email"]').val(response.email)
+                        modal.find('input[name="username"]').val(response.username)
                         modal.find('input[name="nip"]').val(response.employee.nip)
                         modal.find('input[name="name"]').val(response.employee.name)
                         modal.find('input[name="birthplace"]').val(response.employee.birthplace)
@@ -310,6 +324,7 @@
                 let modal = $('#modalAddPenilai');
 
                 formAjax($(this), modal, function(data, status, jqxhr, form, modal) {
+                    baseSwal('success', 'Success', 'Data berhasil disimpan')
                     modal.modal('hide')
                     datatable.ajax.reload()
                 })

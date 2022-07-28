@@ -1,4 +1,4 @@
-var alertStyle = 'position: absolute;top: 10px;right: 10px;z-index: 99999;padding: 1rem 0.5rem!important; min-width:150px; max-width:500px;'
+var alertStyle = 'position: fixed;top: 10px;right: 10px;z-index: 9999999;padding: 1rem 0.5rem!important; min-width:150px; max-width:500px;'
 var _isRequest = false;
 $('#modalDelete').on('show.coreui.modal', function(e) {
     let btn = $(e.relatedTarget);
@@ -159,11 +159,12 @@ function error(xhr) {
     if (xhr.status == 500) {
         baseSwal('danger', 'Error!', 'Query error');
     } else if (xhr.status == 422) {
-        let json = $.parseJSON(xhr.responseText)
+        let json = xhr.responseJSON
         let message = ''
         if (json.errors != null) {
             message = '<ul class="text-left">'
             $.each(json.errors, function(index, value) {
+                console.log(value)
                 message += '<li>' + value + '</li>'
             })
             message += '</ul>'
@@ -177,6 +178,8 @@ function error(xhr) {
         baseSwal('danger', 'Error!', xhr.responseText);
     } else if (xhr.status == 501) {
         baseSwal('danger', 'Error!', $.parseJSON(xhr.responseText).message);
+    }else{
+        baseSwal('danger', 'Error!', $.parseJSON(xhr.responseText).message);
     }
 }
 
@@ -185,7 +188,7 @@ function baseSwal(type = 'warning', title, message, timer = 5000) {
     if (title != undefined) {
         html += `<div class="fw-bold">` + title != undefined ? title : '' + `</div>`
     }
-    html += `${message}` +
+    html += `<br>${message}` +
         `<button class="btn-close" type="button" data-coreui-dismiss="alert" aria-label="Close"></button>` +
         `</div>`
 

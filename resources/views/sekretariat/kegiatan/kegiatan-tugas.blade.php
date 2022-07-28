@@ -300,6 +300,7 @@
                 let modal = $('#modalAddKegiatan');
 
                 formAjax($(this), modal, function(data, status, jqxhr, form, modal) {
+                    baseSwal('success', 'Success', 'Data berhasil disimpan')
                     modal.modal('hide')
                     datatable.ajax.reload()
                 })

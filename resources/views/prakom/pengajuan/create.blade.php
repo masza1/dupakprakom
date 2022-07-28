@@ -317,14 +317,16 @@
                     '<tr>' +
                     '<td colspan="5" class="text-left align-middle fw-bold">Jumlah Angka Kredit Kegiatan Tugas</td>' +
                     '<td class="align-middle fw-bold grand_total">-</td>' +
-                    '<td></td>' +
-                    '</tr>'
+                    '<td class="align-middle fw-bold"></td>' +
+                    '</tr>' 
+
                 var customRowDetailPen =
                     '<tr>' +
                     '<td colspan="5" class="text-left align-middle fw-bold">Jumlah Angka Kredit Kegiatan Penunjang</td>' +
                     '<td class="align-middle fw-bold grand_total">-</td>' +
-                    '<td>-</td>' +
-                    '</tr>'
+                    '<td class="align-middle fw-bold"></td>' +
+                    '</tr>'+
+                    '<tr>'
 
 
                 function initialDatatable(table, url, dataTableData, addRow) {
@@ -647,6 +649,7 @@
                     e.preventDefault();
 
                     formAjax($(this), undefined, function(data, status, jqxhr, form) {
+                        baseSwal('success', 'Success', 'Data berhasil disimpan')
                         $('#canvasEditProfile').find('.btn-close').trigger('click')
                     })
                 })

@@ -66,6 +66,7 @@ class UserController extends Controller
     {
         $validatedUser = $request->validate([
             "email" => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'username' => ['required', 'string', 'max:255', 'unique:users'],
             "password" => ['required', 'confirmed', Password::default()],
         ]);
         $validatedUser['password'] = Hash::make($validatedUser['password']);
@@ -95,6 +96,7 @@ class UserController extends Controller
         } else {
             $validatedUser += ['level' => 'penilai'];
         }
+
         DB::beginTransaction();
         try {
             $user = $this->modelCreate($validatedUser);
@@ -153,9 +155,14 @@ class UserController extends Controller
     {
         $user = $this->modelFind($id);
         $validatedUser = [];
-        if ($user->email != $request->email) {
+        if ($user->email != $request->email && $request->email) {
             $validatedUser += $request->validate([
                 "email" => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            ]);
+        }
+        if ($user->username != $request->username && $request->username) {
+            $validatedUser += $request->validate([
+                'username' => ['required', 'string', 'max:255', 'unique:users'],
             ]);
         }
 

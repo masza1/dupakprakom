@@ -694,25 +694,8 @@
                 <tr>
                     <td style="width:30%"></td>
                     <td style="width: 3%"></td>
-                    <td class="align-middle fs-14" style="width: 10%; padding: 0px"></td>
+                    <td class="align-middle fs-14" style="width: 10%; padding: 0px; height:50px"></td>
                     <td class="align-middle fs-14" style="width: 20%; padding: 0px"></td>
-                </tr>
-                <tr>
-                    <td style="width:30%"></td>
-                    <td style="width: 3%"></td>
-                    <td class="align-middle fs-14" style="width: 10%; padding: 0px"></td>
-                    <td class="align-middle fs-14" style="width: 20%; padding: 0px"></td>
-                </tr>
-                <tr>
-                    <td style="width:30%"></td>
-                    <td style="width: 3%"></td>
-                    <td class="align-middle fs-14" style="width: 10%; padding: 0px"></td>
-                    <td class="align-middle fs-14" style="width: 20%; padding: 0px"></td>
-                </tr>
-                <tr>
-                    <td style="width:30%"></td>
-                    <td style="width: 3%"></td>
-                    <td colspan="2" class="align-middle fs-14" style="width: 10%; padding: 0px; font-weight: bold;text-decoration: underline">{{ $tanda->name }}</td>
                 </tr>
                 <tr>
                     <td style="width:30%"></td>

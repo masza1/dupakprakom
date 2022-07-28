@@ -48,7 +48,7 @@
                     <select id="level_id" name="level_id" class="form-control" required>
                         <option value="" selected disabled>-- Pilih Jenjang Jabatan --</option>
                         @foreach ($levels as $item)
-                        <option value="{{ $item->id }}">{{ $item->level_name }}</option>
+                            <option value="{{ $item->id }}">{{ $item->level_name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -148,7 +148,7 @@
                     }, {
                         text: 'Refresh Data',
                         className: 'btn btn-primary btn-sm text-white',
-                        action: function(){
+                        action: function() {
                             datatable.ajax.reload()
                         }
                     }]
@@ -169,7 +169,7 @@
                     url = url.replace('%20', id)
                     modal.find('button[type="submit"]').text('Ubah')
                     form.append('<input type="hidden" name="_method" value="PUT"/>')
-                    form.append('<input type="hidden" name="id" value="'+id+'"/>')
+                    form.append('<input type="hidden" name="id" value="' + id + '"/>')
 
                     baseAjax(url, 'GET', function(response) {
                         modal.find('input[name="position_name"]').val(response.position_name)
@@ -187,12 +187,13 @@
                 let modal = $('#modalAddJabatan');
 
                 formAjax($(this), modal, function(data, status, jqxhr, form, modal) {
+                    baseSwal('success', 'Success', 'Data berhasil disimpan')
                     modal.modal('hide')
                     datatable.ajax.reload()
                 })
             })
 
-            $(document).on('submit', '#formDelete', function(e){
+            $(document).on('submit', '#formDelete', function(e) {
                 e.preventDefault()
                 deleteData($(this), datatable)
             })

@@ -23,11 +23,14 @@ class DetailActivityController extends Controller
             }])->where('submission_id', $submission_id)->get();
             $detail = $detail->map(function($val, $idx) use($detail){
                 $grand_total_credit = 0;
+                $grand_total_approve = 0;
                 foreach ($detail as $key => $value) {
                     $grand_total_credit += $value->total_credit;
+                    $grand_total_approve += $value->approve_credit;
                 }
 
                 $val->grand_total_credit = $grand_total_credit;
+                $val->grand_total_approve = $grand_total_approve;
                 return $val;
             });
             return Datatables::of($detail)->make(true);
