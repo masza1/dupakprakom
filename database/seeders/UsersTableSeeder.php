@@ -19,21 +19,21 @@ class UsersTableSeeder extends Seeder
         \DB::table('users')->delete();
         
         \DB::table('users')->insert(array (
-            0 => 
-            array (
-                'id' => 1,
-                'username' => 'dupakprakom',
-                'email' => 'dupakprakom@gmail.com',
-                'email_verified_at' => '2022-06-23 04:34:57',
-                'password' => '$2y$10$39wlD7SRwudTJCFUGYptFOGERUp/zZ9ZPOpMJSfzc.1wzS/Sr0NO.',
-                'level' => 'admin',
-                'remember_token' => NULL,
-                'created_at' => '2022-06-22 21:33:43',
-                'updated_at' => '2022-06-22 21:33:43',
-            ),
+            // 0 => 
+            // array (
+            //     'id' => 1,
+            //     'username' => 'dupakprakom',
+            //     'email' => 'dupakprakom@gmail.com',
+            //     'email_verified_at' => '2022-06-23 04:34:57',
+            //     'password' => '$2y$10$39wlD7SRwudTJCFUGYptFOGERUp/zZ9ZPOpMJSfzc.1wzS/Sr0NO.',
+            //     'level' => 'admin',
+            //     'remember_token' => NULL,
+            //     'created_at' => '2022-06-22 21:33:43',
+            //     'updated_at' => '2022-06-22 21:33:43',
+            // ),
             1 => 
             array (
-                'id' => 2,
+                'id' => 1,
                 'username' => 'sekretariat',
                 'email' => 'sekretariat@gmail.com',
                 'email_verified_at' => '2022-06-23 21:40:48',
@@ -42,7 +42,7 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2022-06-23 21:42:12',
                 'updated_at' => '2022-06-23 21:42:16',
-            ),
+            )/* ,
             2 => 
             array (
                 'id' => 9,
@@ -78,7 +78,7 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2022-06-26 04:29:35',
                 'updated_at' => '2022-06-26 04:29:35',
-            ),
+            ), */
         ));
         
         

@@ -1,0 +1,33 @@
+Requirements : 
+ - PHP Version 7.4 or XAMPP with Version PHP 7.4 (recomended to install XAMPP)
+ - Composer
+ - Node Js Version 14.20.x
+ - Git Bash / Github Desktop
+
+
+================================================================
+
+Installation Instructions
+
+if you already install Git, open Git bash and run command below :
+  -  cd to your htdocs directory, ex: 'cd C:\XAMPP\htdocs'
+  - run git clone https://github.com/masza1/dupakprakom.git
+
+when Git not installed
+  - visit https://github.com/masza1/dupakprakom
+  - click button Code
+  - Download ZIP
+
+1. Open Terminal
+2. Go to directory dupakprakom at your htdocs, ex: 'C:\XAMPP\htdocs\dupakprakom'
+3. Run composer install
+4. copy .env.example file and change to .env
+4. then php artisan key:generate
+5. set DB_CONNECTION=mysql
+6. set DB_HOST=127.0.0.1
+7. set DB_PORT=3306
+8. set DB_DATABASE=dupak-prakom // or with your existing database
+9. set DB_USERNAME=root // or with your username XAMPP
+10 set DB_PASSWORD=  // or with your password XAMPP
+11. run php artisan migrate --seed
+12 default sekretariat username = sekretariat, email = sekretariat@gmail.com, password = Password1!
