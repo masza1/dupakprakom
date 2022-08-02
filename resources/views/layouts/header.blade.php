@@ -8,7 +8,7 @@
             <li class="nav-item dropdown d-flex align-items-center">
                 <a class="nav-link py-0" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     {{-- <div class="avatar avatar-md"><img class="avatar-img" src="assets/img/avatars/8.jpg" alt="{{ auth()->user()->email }}"></div> --}}
-                    {{ auth()->user()->email }}
+                    Hi! {{ auth()->user()->employee->name }}
                 </a>
                 <div class="dropdown-menu dropdown-menu-end pt-0">
                     <div class="dropdown-header bg-light py-2">

@@ -133,7 +133,7 @@
                                 <div class="col-md-12 mt-2">
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <button class="btn btn-primary text-white w-100" type="submit" data-type="DRAFT" id="btnDraft">Simpan</button>
+                                            <button class="btn btn-primary text-white w-100" type="submit" data-type="PENGAJUAN" id="btnDraft">Simpan</button>
                                         </div>
                                         <div class="col-md-2">
                                             <button class="btn btn-success text-white w-100" type="submit" data-type="TELAH DINILAI" id="btnAccept">Selesai</button>
@@ -240,7 +240,7 @@
                     <select id="element_id" name="element_id" class="form-control" disabled>
                         <option value="" selected>-- Pilih Unsur --</option>
                         @foreach ($elements as $item)
-                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            <option value="{{ $item->id }}" data-type="{{ $item->type }}">{{ $item->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -301,7 +301,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-check d-flex align-items-center gap-2">
-                    <input type="checkbox" name="bukti1_valid" id="bukti2_valid" class="form-check-input">
+                    <input type="checkbox" name="bukti2_valid" id="bukti2_valid" class="form-check-input">
                     <label for="bukti2_valid" class="form-check-label">Valid ?
                     </label>
                     <button type="button" class="btn btn-link view-file ps-0" id="file_bukti2">Lihat File Bukti 2</button>
@@ -336,6 +336,8 @@
     </x-base-modal>
 @endpush
 @push('js')
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         $(document).ready(function() {
             $('.form-check a').on('click', function(e) {
@@ -532,12 +534,33 @@
             })
 
             $('#dataPengajuan button[type="submit"]').on('click', function(e) {
+                e.preventDefault();
                 $('#dataPengajuan input[name="status"]').val($(this).attr('data-type'))
+                let type = $(this).attr('data-type')
+                let msg = ''
+                if(type == 'PENGAJUAN'){
+                    msg = `Menyimpan DUPAK sebagai DRAFT, Anda Yakin ?` 
+                }else if(type ==  'TELAH DINILAI'){
+                    msg = `Menyimpan DUPAK sebagai TELAH DINILAI, Anda Yakin ?` 
+                }else if(type == 'REVISI'){
+                    msg = `mengembalikan DUPAK untuk di REVISI ?` 
+                }else if(type == 'TOLAK'){
+                    msg = `Anda akan menolak DUPAK ini, Anda yakin ?`
+                }
+
+                Swal.fire({
+                    title: msg,
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Lanjutkan!',
+                    denyButtonText: `Tidak, Batalkan!`,
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        $('#formPengajuan').submit()
+                    }
+                })
             })
 
-            // $('#formPengajuan').on('submit', function(e){
-            //     e.preventDefault();
-            // })
 
             $('#element_id').on('change', function(e) {
                 let url = '{{ route('get-sub-element') }}'
@@ -615,6 +638,29 @@
                 let tempUrl = `{!! route('penilai.nilai-detail', ['submission_id' => ' ', 'id' => ' ']) !!}`
                 tempUrl = tempUrl.replace('%20', '{{ $submission->id }}')
                 tempUrl = tempUrl.replace('%20', btn.attr('data-id'))
+                $.each($('#element_id').find('option'), function(index, value) {
+                    if (activity == 'activity_id') {
+                        if ($(value).attr('data-type') == 'TUGAS') {
+                            $(value).css({
+                                'display':'block'
+                            })
+                        } else {
+                            $(value).css({
+                                'display':'none'
+                            })
+                        }
+                    } else {
+                        if ($(value).attr('data-type') == 'PPP') {
+                            $(value).css({
+                                'display':'block'
+                            })
+                        } else {
+                            $(value).css({
+                                'display':'none'
+                            })
+                        }
+                    }
+                })
                 if (kegiatanPenUrl == url) {
                     tempUrl = tempUrl + '?type=' + btn.data('type')
                 } else {
@@ -677,13 +723,10 @@
                                 mustTrigger: true
                             }
                         ])
-                        if (response.approve_credit != null && response.approve_credit != '') {
-                            canvas.find('input[name="approve_credit"]').val(response.approve_credit)
-                            canvas.find('input[name="approve_credit"]').prop('disabled', true);
-                        } else {
-                            if (user_level != 'prakom' && user_level != 'admin') {
-                                canvas.find('input[name="approve_credit"]').removeAttr('disabled');
-                            }
+                        canvas.find('input[name="approve_credit"]').val(response.approve_credit)
+
+                        if (user_level != 'prakom' && user_level != 'admin') {
+                            canvas.find('input[name="approve_credit"]').removeAttr('disabled');
                         }
                         if (response.description != null && response.description != '') {
                             canvas.find('textarea[name="description"]').val(response.description)

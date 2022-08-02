@@ -1,15 +1,19 @@
 @extends('layouts.app')
 @section('body')
-    <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <div class="bg-light min-vh-100 d-flex flex-row align-items-center" style="background-image: url('{{ asset('assets/img/full.jpg') }}')">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-8">
+                <div class="col-lg-4">
                     <div class="card-group d-block d-md-flex row">
                         @include('layouts.notification')
-                        <div class="card col-md-7 p-4 mb-0">
+                        <div class="card col-md-12 p-4 mb-0">
+                            <div class="card-header text-center">
+                                <img class="mb-4" src="{{ asset('assets/img/avatars/1.jpg') }}" alt="Logo" style="width:150px">
+                                <h2>DUPAK PRAKOM</h4>
+                            </div>
                             <div class="card-body">
-                                <h1>Login</h1>
-                                <p class="text-medium-emphasis">Sign In to your account</p>
+                                <h1 class="text-center">Login</h1>
+                                <p class="text-medium-emphasis text-center">Sign In to your account</p>
                                 <form method="POST" action="{{ route('login') }}" class="mt-4">
                                     @csrf
                                     <div class="form-floating mb-3">

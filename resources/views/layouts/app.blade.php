@@ -143,7 +143,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                {{-- @if (auth()->user()->level == 'prakom')
+                                @if (auth()->user()->level == 'prakom')
                                     <div class="col-md-6">
                                         <div class="form-floating mb-3">
                                             <input class="form-control" id="tmt" type="date" name="tmt" placeholder="Tempat Lahir" required>
@@ -178,13 +178,13 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3">
-                                                    <input class="form-control" id="tahun_lama" type="number" name="tahun_lama" step="1" min="0" max="" placeholder="Tempat Lahir" required>
+                                                    <input class="form-control" id="tahun_lama" type="number" name="tahun_lama" step="1" min="1" max="" placeholder="Tempat Lahir">
                                                     <label for="tahun_lama">Tahun</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3">
-                                                    <input class="form-control" id="bulan_lama" type="number" name="bulan_lama" step="1" min="1" max="12" placeholder="Tempat Lahir" required>
+                                                    <input class="form-control" id="bulan_lama" type="number" name="bulan_lama" step="1" min="0" max="12" placeholder="Tempat Lahir">
                                                     <label for="bulan_lama">Bulan</label>
                                                 </div>
                                             </div>
@@ -195,19 +195,19 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3">
-                                                    <input class="form-control" id="tahun_baru" type="number" name="tahun_baru" step="1" min="0" max="" placeholder="Tempat Lahir" required>
+                                                    <input class="form-control" id="tahun_baru" type="number" name="tahun_baru" step="1" min="1" max="" placeholder="Tempat Lahir">
                                                     <label for="tahun_baru">Tahun</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3">
-                                                    <input class="form-control" id="bulan_baru" type="number" name="bulan_baru" step="1" min="1" max="12" placeholder="Tempat Lahir" required>
+                                                    <input class="form-control" id="bulan_baru" type="number" name="bulan_baru" step="1" min="0" max="12" placeholder="Tempat Lahir">
                                                     <label for="bulan_baru">Bulan</label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                @endif --}}
+                                @endif
                             </div>
                         </div>
                     </div>

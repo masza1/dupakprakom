@@ -112,6 +112,9 @@ class PenilaianController extends Controller
         ]);
         $validated += ["spt_valid" => $request->spt_valid != null ? true : false];
         $validated += ["bukti1_valid" => $request->bukti1_valid != null ? true : false];
+        if($request->spt_valid == null || $request->bukti1_valid == null){
+            return abort(501, 'Harap Validasi file SPT dan Bukti 1');
+        }
         $validated += ["bukti2_valid" => $request->bukti2_valid != null ? true : false];
         $validated += ["bukti3_valid" => $request->bukti3_valid != null ? true : false];
         if ($model->where('submission_id', $submission_id)->where('id', $id)->update($validated)) {

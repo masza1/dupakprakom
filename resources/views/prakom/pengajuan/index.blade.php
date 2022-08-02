@@ -33,6 +33,7 @@
     </div>
 @endsection
 @push('js')
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
             var initial = {}
@@ -125,7 +126,7 @@
                                 let csrf = '<input type="hidden" name="_token" value="{!! csrf_token() !!}">'
                                 let method = '<input type="hidden" name="_method" value="PUT">'
                                 if (data.status == 'DRAFT' || data.status == 'REVISI') {
-                                    html += `<form action="${url}?ajukan=true" method="POST" style="display:inline-block">${csrf}${method}<button class="btn btn-primary btn-sm text-white mx-1" type="submit"><i class="fa fa-paper-plane"></i></button></form>`
+                                    html += `<form action="${url}?ajukan=true" method="POST" style="display:inline-block" class="formAjukan">${csrf}${method}<button class="btn btn-primary btn-sm text-white mx-1" type="submit"><i class="fa fa-paper-plane"></i></button></form>`
                                     html += `<a href="${url}/edit" class="btn btn-warning btn-sm text-white mx-1"><i class="fa fa-pencil-alt"></i></a>`;
                                     html += `<button class="btn btn-danger btn-sm text-white mx-1" data-coreui-target="#modalDelete" data-coreui-toggle="modal" data-id="${data.id}" data-url="{!! route('prakom.pengajuan.destroy', ['id' => ' ']) !!}" ><i class="fa fa-trash"></i></button>`;
                                 } else {
@@ -155,6 +156,22 @@
                     }]
                 })
             }
+
+            $(document).on('submit', '.formAjukan', function(e){
+                e.preventDefault();
+                let form = $(this);
+                Swal.fire({
+                    title: 'Yakin ingin mengajukan pengajuan ini?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Lanjutkan!',
+                    denyButtonText: `Tidak, Batalkan!`,
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        e.currentTarget.submit()
+                    }
+                })
+            })
 
             $(document).on('click', '#btnAddSubmission', function(e) {
                 let btn = $(this)

@@ -17,16 +17,17 @@ class DashboardController extends Controller
             return $q->status;
         })->map(function ($q) {
             return $q->count();
-        });
+        })->toArray();
         $total = 0;
         if(count($submissions) > 0)
-        $total = array_sum($submissions->toArray());
+        $total = array_sum($submissions);
         
         $users = User::orwhere('level', 'penilai')->orwhere('level', 'prakom')->get()->groupBy(function ($q) {
             return $q->level;
         })->map(function ($q) {
             return $q->count();
         })->toArray();
+        // return $submissions;
         // return $users['prakom'];
         return view('sekretariat.dashboard', compact('submissions', 'total','users'));
     }
@@ -36,22 +37,22 @@ class DashboardController extends Controller
             return $q->status;
         })->map(function ($q) {
             return $q->count();
-        });
+        })->toArray();
         $total = 0;
         if(count($submissions) > 0)
-        $total = array_sum($submissions->toArray());
+        $total = array_sum($submissions);
         return view('penilai.dashboard', compact('submissions', 'total'));
     }
     public function prakom()
     {
-        $submissions = Submission::select('status')->get()->groupBy(function ($q) {
+        $submissions = Submission::select('status')->where('employee_id', auth()->user()->employee->id)->get()->groupBy(function ($q) {
             return $q->status;
         })->map(function ($q) {
             return $q->count();
-        });
+        })->toArray();
         $total = 0;
         if(count($submissions) > 0)
-        $total = array_sum($submissions->toArray());
+        $total = array_sum($submissions);
         return view('prakom.dashboard', compact('submissions', 'total'));
     }
 

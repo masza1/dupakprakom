@@ -170,7 +170,7 @@
                         <select id="element_id" name="element_id" class="form-control" required>
                             <option value="" selected>-- Pilih Unsur --</option>
                             @foreach ($elements as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                <option value="{{ $item->id }}" data-type="{{ $item->type}}">{{ $item->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -312,7 +312,7 @@
                 var kegiatanPenUrl = '{{ route('prakom.detail-kegitan-pen.index', ['submission' => ' ']) }}';
                 kegiatanUrl = kegiatanUrl.replace('%20', submission.id)
                 kegiatanPenUrl = kegiatanPenUrl.replace('%20', submission.id)
-                var datatableDetail, datatableDetailPen;
+                var datatableDetail, datatableDetailPen, grand_total_approve = 0;
                 var customRowDetail =
                     '<tr>' +
                     '<td colspan="5" class="text-left align-middle fw-bold">Jumlah Angka Kredit Kegiatan Tugas</td>' +
@@ -444,13 +444,17 @@
                         ],
                         drawCallback: function(setting) {
                             if (addRow != undefined) {
-                                table.append(addRow);
-                                if (datatable.ajax.json().data.length == 0) {
-                                    table.find('.grand_total').text(0.00)
-                                } else {
-                                    table.find('.grand_total').text(datatable.ajax.json().data[0].grand_total_credit.toFixed(2))
-                                }
+                            table.append(addRow);
+                            if (datatable.ajax.json().data.length == 0) {
+                                table.find('.grand_total').text(0.00)
+                            } else {
+                                table.find('.grand_total').text(datatable.ajax.json().data[0].grand_total_credit.toFixed(2))
+                                table.find('.grand_approve').text(datatable.ajax.json().data[0].grand_total_approve.toFixed(2))
+                                grand_total_approve += datatable.ajax.json().data[0].grand_total_approve
+
+                                $('#datatableDetailActivityPen').find('.grand_total_approve').text(grand_total_approve)
                             }
+                        }
                         }
                     });
                     return datatable;
@@ -545,6 +549,21 @@
                     let activity = btn.data('type') == 'utama' ? 'activity_id' : 'pen_activity_id'
                     let activity_id = btn.data('type') == 'utama' ? 'response.activity_id' : 'response.pen_activity_id'
                     $('#activity_id').attr('name', activity);
+                    $.each($('#element_id').find('option'), function(index, value){
+                        if(activity == 'activity_id'){
+                            if($(value).attr('data-type') == 'TUGAS'){
+                                $(value).css({'display':'block'})
+                            }else{
+                                $(value).css({'display':'none'})
+                            }
+                        }else{
+                            if($(value).attr('data-type') == 'PPP'){
+                                $(value).css({'display':'block'})
+                            }else{
+                                $(value).css({'display':'none'})
+                            }
+                        }
+                    })
                     form.get(0).reset();
                     canvas.find('form input[name="_method"]').remove();
                     canvas.find('form input[name="id"]').remove();
@@ -650,7 +669,8 @@
 
                     formAjax($(this), undefined, function(data, status, jqxhr, form) {
                         baseSwal('success', 'Success', 'Data berhasil disimpan')
-                        $('#canvasEditProfile').find('.btn-close').trigger('click')
+                        $('#formAddKegiatan').find('.btn-close').trigger('click')
+                        eval(data.datatable).ajax.reload()
                     })
                 })
 
