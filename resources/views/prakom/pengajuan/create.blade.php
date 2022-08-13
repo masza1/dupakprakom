@@ -28,41 +28,53 @@
                             @endif
                             <div class="row">
                                 <input type="hidden" name="id" value="{{ $submission->id ?? '' }}">
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="p_mulai_pengisian" type="date" name="p_mulai_pengisian" placeholder="Nama Jabatan" required>
+                                        <label for="p_mulai_pengisian">Masa Awal Pengisian</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="p_akhir_pengisian" type="date" name="p_akhir_pengisian" placeholder="Nama Jabatan" required>
+                                        <label for="p_akhir_pengisian">Masa Akhir Pengisian</label>
+                                    </div>
+                                </div>
                                 <div class="col-md-4 col-sm-6 mb-2">
                                     <label for="surat_pengantar" class="form-label">Surat Pengantar *maks 1MB</label>
-                                    <input type="file" name="surat_pengantar" id="surat_pengantar" class="form-control dropify" data-max-file-size="1M" data-allowed-file-extensions="pdf" accept=".pdf" required>
+                                    <input type="file" name="surat_pengantar" id="surat_pengantar" class="form-control dropify" data-max-file-size="1M" data-allowed-file-extensions="pdf" accept=".pdf" {{ request()->routeIs('prakom.pengajuan.create') ? 'required' : '' }}>
                                 </div>
                                 <div class="col-md-4 col-sm-6 mb-2">
                                     <label for="matriks_pengajuan" class="form-label">Matriks Pengajuan *maks 1MB</label>
-                                    <input type="file" name="matriks_pengajuan" id="matriks_pengajuan" class="form-control dropify" data-max-file-size="1M" data-allowed-file-extensions="pdf" accept=".pdf" required>
+                                    <input type="file" name="matriks_pengajuan" id="matriks_pengajuan" class="form-control dropify" data-max-file-size="1M" data-allowed-file-extensions="pdf" accept=".pdf" {{ request()->routeIs('prakom.pengajuan.create') ? 'required' : '' }}>
                                 </div>
                                 <div class="col-md-4 col-sm-6 mb-2">
                                     <label for="sk_pangkat" class="form-label">SK Pangkat *maks 1MB</label>
-                                    <input type="file" name="sk_pangkat" id="sk_pangkat" class="form-control dropify" data-max-file-size="1M" data-allowed-file-extensions="pdf" accept=".pdf" required>
+                                    <input type="file" name="sk_pangkat" id="sk_pangkat" class="form-control dropify" data-max-file-size="1M" data-allowed-file-extensions="pdf" accept=".pdf" {{ request()->routeIs('prakom.pengajuan.create') ? 'required' : '' }}>
                                 </div>
                                 <div class="col-md-4 col-sm-6 mb-2">
                                     <label for="sk_kenaikan" class="form-label">SK Kenaikan *maks 1MB</label>
-                                    <input type="file" name="sk_kenaikan" id="sk_kenaikan" class="form-control dropify" data-max-file-size="1M" data-allowed-file-extensions="pdf" accept=".pdf" required>
+                                    <input type="file" name="sk_kenaikan" id="sk_kenaikan" class="form-control dropify" data-max-file-size="1M" data-allowed-file-extensions="pdf" accept=".pdf" {{ request()->routeIs('prakom.pengajuan.create') ? 'required' : '' }}>
                                 </div>
                                 <div class="col-md-4 col-sm-6 mb-2">
                                     <label for="pak_terakhir" class="form-label">PAK Terakhir *maks 1MB</label>
-                                    <input type="file" name="pak_terakhir" id="pak_terakhir" class="form-control dropify" data-max-file-size="1M" data-allowed-file-extensions="pdf" accept=".pdf" required>
+                                    <input type="file" name="pak_terakhir" id="pak_terakhir" class="form-control dropify" data-max-file-size="1M" data-allowed-file-extensions="pdf" accept=".pdf" {{ request()->routeIs('prakom.pengajuan.create') ? 'required' : '' }}>
                                 </div>
                                 <div class="col-md-4 col-sm-6 mb-2">
                                     <label for="skp1" class="form-label">SKP 1 Tahun Terakhir *maks 1MB</label>
-                                    <input type="file" name="skp1" id="skp1" class="form-control dropify" data-max-file-size="1M" data-allowed-file-extensions="pdf" accept=".pdf" required>
+                                    <input type="file" name="skp1" id="skp1" class="form-control dropify" data-max-file-size="1M" data-allowed-file-extensions="pdf" accept=".pdf" {{ request()->routeIs('prakom.pengajuan.create') ? 'required' : '' }}>
                                 </div>
                                 <div class="col-md-4 col-sm-6 mb-2">
                                     <label for="skp2" class="form-label">SKP 2 Tahun Terakhir *maks 1MB</label>
-                                    <input type="file" name="skp2" id="skp2" class="form-control dropify" data-max-file-size="1M" data-allowed-file-extensions="pdf" accept=".pdf" required>
+                                    <input type="file" name="skp2" id="skp2" class="form-control dropify" data-max-file-size="1M" data-allowed-file-extensions="pdf" accept=".pdf" {{ request()->routeIs('prakom.pengajuan.create') ? 'required' : '' }}>
                                 </div>
                                 <div class="col-md-4 col-sm-6 mb-2">
                                     <label for="ijazah" class="form-label">Ijazah *maks 1MB</label>
-                                    <input type="file" name="ijazah" id="ijazah" class="form-control dropify" data-max-file-size="1M" data-allowed-file-extensions="pdf" accept=".pdf" required>
+                                    <input type="file" name="ijazah" id="ijazah" class="form-control dropify" data-max-file-size="1M" data-allowed-file-extensions="pdf" accept=".pdf" {{ request()->routeIs('prakom.pengajuan.create') ? 'required' : '' }}>
                                 </div>
                                 <div class="col-md-4 col-sm-6 mb-2">
                                     <label for="spmk" class="form-label">SPMK *maks 1MB</label>
-                                    <input type="file" name="spmk" id="spmk" class="form-control dropify" data-max-file-size="1M" data-allowed-file-extensions="pdf" accept=".pdf" required>
+                                    <input type="file" name="spmk" id="spmk" class="form-control dropify" data-max-file-size="1M" data-allowed-file-extensions="pdf" accept=".pdf" {{ request()->routeIs('prakom.pengajuan.create') ? 'required' : '' }}>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating mb-3">
@@ -170,7 +182,7 @@
                         <select id="element_id" name="element_id" class="form-control" required>
                             <option value="" selected>-- Pilih Unsur --</option>
                             @foreach ($elements as $item)
-                                <option value="{{ $item->id }}" data-type="{{ $item->type}}">{{ $item->name }}</option>
+                                <option value="{{ $item->id }}" data-type="{{ $item->type }}">{{ $item->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -272,6 +284,8 @@
                 resetPreview($('input[name="ijazah"]'), 'storage/' + submission.ijazah, 'ijazah');
                 resetPreview($('input[name="spmk"]'), 'storage/' + submission.spmk, 'spmk');
                 $('#catatan_penilai').text(submission.catatan_penilai)
+                $('#p_mulai_pengisian').val(submission.p_mulai_pengisian)
+                $('#p_akhir_pengisian').val(submission.p_akhir_pengisian)
             }
 
             function resetPreview(input, src = '', fname = '') {
@@ -306,7 +320,9 @@
     @if (!request()->routeIs('prakom.pengajuan.create'))
         <script>
             $(document).ready(function() {
-                $('.select2').select2()
+                $('.select2').select2({
+                    dropdownParent: $('#canvasAddKegiatan')
+                })
                 var initial = {};
                 var kegiatanUrl = '{{ route('prakom.detail-kegitan.index', ['submission' => ' ']) }}';
                 var kegiatanPenUrl = '{{ route('prakom.detail-kegitan-pen.index', ['submission' => ' ']) }}';
@@ -318,14 +334,14 @@
                     '<td colspan="5" class="text-left align-middle fw-bold">Jumlah Angka Kredit Kegiatan Tugas</td>' +
                     '<td class="align-middle fw-bold grand_total">-</td>' +
                     '<td class="align-middle fw-bold"></td>' +
-                    '</tr>' 
+                    '</tr>'
 
                 var customRowDetailPen =
                     '<tr>' +
                     '<td colspan="5" class="text-left align-middle fw-bold">Jumlah Angka Kredit Kegiatan Penunjang</td>' +
                     '<td class="align-middle fw-bold grand_total">-</td>' +
                     '<td class="align-middle fw-bold"></td>' +
-                    '</tr>'+
+                    '</tr>' +
                     '<tr>'
 
 
@@ -444,17 +460,17 @@
                         ],
                         drawCallback: function(setting) {
                             if (addRow != undefined) {
-                            table.append(addRow);
-                            if (datatable.ajax.json().data.length == 0) {
-                                table.find('.grand_total').text(0.00)
-                            } else {
-                                table.find('.grand_total').text(datatable.ajax.json().data[0].grand_total_credit.toFixed(2))
-                                table.find('.grand_approve').text(datatable.ajax.json().data[0].grand_total_approve.toFixed(2))
-                                grand_total_approve += datatable.ajax.json().data[0].grand_total_approve
+                                table.append(addRow);
+                                if (datatable.ajax.json().data.length == 0) {
+                                    table.find('.grand_total').text(0.00)
+                                } else {
+                                    table.find('.grand_total').text(datatable.ajax.json().data[0].grand_total_credit.toFixed(2))
+                                    table.find('.grand_approve').text(datatable.ajax.json().data[0].grand_total_approve.toFixed(2))
+                                    grand_total_approve += datatable.ajax.json().data[0].grand_total_approve
 
-                                $('#datatableDetailActivityPen').find('.grand_total_approve').text(grand_total_approve)
+                                    $('#datatableDetailActivityPen').find('.grand_total_approve').text(grand_total_approve)
+                                }
                             }
-                        }
                         }
                     });
                     return datatable;
@@ -487,7 +503,7 @@
                     baseAjax(urlKegiatan, 'GET', function(response) {
                         $('#activity_id').empty().append('<option value="">-- Pilih Kegiatan --</option>')
                         $.each(response, function(index, value) {
-                            $('#activity_id').append(`<option value="${value.id}" data-output="${value.output}" data-credit="${value.credit}">${value.description}</option>`)
+                            $('#activity_id').append(`<option value="${value.id}" data-sub="${value.sub_element_id}" data-output="${value.output}" data-credit="${value.credit}">${value.description}</option>`)
                         })
                     }, {
                         element_id: $(this).val()
@@ -504,14 +520,21 @@
                     $('#output').val(null)
                     $('#jumlah').val(null)
                     $('#total_credit').val(null)
-                    baseAjax(urlKegiatan, 'GET', function(response) {
-                        $('#activity_id').empty().append('<option value="">-- Pilih Kegiatan --</option>')
-                        $.each(response, function(index, value) {
-                            $('#activity_id').append(`<option value="${value.id}" data-output="${value.output}" data-credit="${value.credit}">${value.description}</option>`)
-                        })
-                    }, {
-                        sub_element_id: $(this).val()
+                    $.each($('#activity_id option'), function(index, value) {
+                        if ($(value).attr('data-sub') != $('#sub_element_id').val()) {
+                            $(value).css({
+                                'display': 'none'
+                            })
+                        }
                     })
+                    // baseAjax(urlKegiatan, 'GET', function(response) {
+                    //     $('#activity_id').empty().append('<option value="">-- Pilih Kegiatan --</option>')
+                    //     $.each(response, function(index, value) {
+                    //         $('#activity_id').append(`<option value="${value.id}" data-output="${value.output}" data-credit="${value.credit}">${value.description}</option>`)
+                    //     })
+                    // }, {
+                    //     sub_element_id: $(this).val()
+                    // })
                 })
 
                 $('#activity_id').on('change', function(e) {
@@ -549,18 +572,26 @@
                     let activity = btn.data('type') == 'utama' ? 'activity_id' : 'pen_activity_id'
                     let activity_id = btn.data('type') == 'utama' ? 'response.activity_id' : 'response.pen_activity_id'
                     $('#activity_id').attr('name', activity);
-                    $.each($('#element_id').find('option'), function(index, value){
-                        if(activity == 'activity_id'){
-                            if($(value).attr('data-type') == 'TUGAS'){
-                                $(value).css({'display':'block'})
-                            }else{
-                                $(value).css({'display':'none'})
+                    $.each($('#element_id').find('option'), function(index, value) {
+                        if (activity == 'activity_id') {
+                            if ($(value).attr('data-type') == 'TUGAS') {
+                                $(value).css({
+                                    'display': 'block'
+                                })
+                            } else {
+                                $(value).css({
+                                    'display': 'none'
+                                })
                             }
-                        }else{
-                            if($(value).attr('data-type') == 'PPP'){
-                                $(value).css({'display':'block'})
-                            }else{
-                                $(value).css({'display':'none'})
+                        } else {
+                            if ($(value).attr('data-type') == 'PPP') {
+                                $(value).css({
+                                    'display': 'block'
+                                })
+                            } else {
+                                $(value).css({
+                                    'display': 'none'
+                                })
                             }
                         }
                     })

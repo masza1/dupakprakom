@@ -23,7 +23,8 @@ class Employee extends Model
         'bulan_lama',
         'tahun_lama',
         'bulan_baru',
-        'tahun_baru'
+        'tahun_baru',
+        'level_id',
     ];
 
     public function user(){

@@ -85,8 +85,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating mb-3">
-                            <input class="form-control" id="name" type="text" name="name" placeholder="Nama Penilai" required>
-                            <label for="name">Nama Penilai</label>
+                            <input class="form-control" id="name" type="text" name="name" placeholder="Nama Prakom" required>
+                            <label for="name">Nama Prakom</label>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -115,7 +115,17 @@
                             <select id="group_id" name="group_id" class="form-control" required>
                                 <option value="" selected disabled>-- Pilih Golongan --</option>
                                 @foreach ($groups as $item)
-                                <option value="{{ $item->id }}">{{ $item->group_name . ' - ' . $item->rank }}</option>
+                                    <option value="{{ $item->id }}">{{ $item->group_name . ' - ' . $item->rank }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <select id="level_id" name="level_id" class="form-control" required>
+                                <option value="" selected disabled>-- Pilih Tingkat Jabatan --</option>
+                                @foreach ($levels as $item)
+                                    <option value="{{ $item->id }}">{{ $item->level_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -125,7 +135,7 @@
                             <select id="position_id" name="position_id" class="form-control" required>
                                 <option value="" selected disabled>-- Pilih Jabatan --</option>
                                 @foreach ($positions as $item)
-                                <option value="{{ $item->id }}">{{ $item->position_name }}</option>
+                                    <option value="{{ $item->id }}" data-level="{{ $item->level_id }}" style="display: none">{{ $item->position_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -135,15 +145,9 @@
                             <select id="unit_id" name="unit_id" class="form-control" required>
                                 <option value="" selected disabled>-- Pilih Unit Kerja --</option>
                                 @foreach ($units as $item)
-                                <option value="{{ $item->id }}">{{ $item->unit_name }}</option>
+                                    <option value="{{ $item->id }}">{{ $item->unit_name }}</option>
                                 @endforeach
                             </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-floating mb-3">
-                            <input class="form-control" id="tmt" type="date" name="tmt" placeholder="Tempat Lahir" required>
-                            <label for="tmt">TMT</label>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -163,7 +167,13 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="tmt" type="date" name="tmt" placeholder="Tempat Lahir" required>
+                            <label for="tmt">TMT</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
                         <div class="form-floating mb-3">
                             <input class="form-control" id="institusi" type="text" name="institusi" placeholder="Tempat Lahir" required>
                             <label for="institusi">Institusi</label>
@@ -338,12 +348,20 @@
                     }, {
                         text: 'Refresh Data',
                         className: 'btn btn-primary btn-sm text-white',
-                        action: function(){
+                        action: function() {
                             datatable.ajax.reload()
                         }
                     }]
                 })
             }
+
+            $('#level_id').on('change', function(e){
+                let level_id = $(this).val();
+                let select_jabatan = $('#position_id');
+                select_jabatan.prop('selectedIndex', 0).trigger('change');
+                select_jabatan.find('option[data-level="'+level_id+'"]').css({'display':'block'});
+                select_jabatan.find('option:not([data-level="'+level_id+'"])').css({'display':'none'});
+            })
 
             $('#modalAddPenilai').on('show.coreui.modal', function(e) {
                 let btn = $(e.relatedTarget)
@@ -355,7 +373,7 @@
                 modal.find('form input[name="id"]').remove();
                 if (btn.attr('data-id') != undefined) {
                     let id = btn.attr('data-id')
-                    url = '{{ route('sekretariat.users.update', ['id' => ' ', "tab" => "prakom"]) }}'
+                    url = '{{ route('sekretariat.users.update', ['id' => ' ', 'tab' => 'prakom']) }}'
                     url = url.replace('%20', id)
                     modal.find('button[type="submit"]').text('Ubah')
                     form.append('<input type="hidden" name="_method" value="PUT"/>')
@@ -402,6 +420,11 @@
                                 type: 'select',
                                 content: 'select[name="group_id"]',
                                 data: response.employee.group_id,
+                            },
+                            {
+                                type: 'select',
+                                content: 'select[name="level_id"]',
+                                data: response.employee.level_id,
                             },
                             {
                                 type: 'select',
@@ -452,7 +475,7 @@
                     })
                 } else {
                     modal.find('input[type="password"]').prop('required', true)
-                    url = '{!! route('sekretariat.users.store', ["tab" => "prakom"]) !!}'
+                    url = '{!! route('sekretariat.users.store', ['tab' => 'prakom']) !!}'
                     modal.find('button[type="submit"]').text('Simpan')
                 }
                 form.attr('action', url);

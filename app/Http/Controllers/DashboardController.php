@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\News;
 use App\Models\Periode;
 use App\Models\Submission;
 use App\Models\Tanda;
@@ -27,9 +28,11 @@ class DashboardController extends Controller
         })->map(function ($q) {
             return $q->count();
         })->toArray();
+
+        $news = News::orderBy('created_at', 'DESC')->get();
         // return $submissions;
         // return $users['prakom'];
-        return view('sekretariat.dashboard', compact('submissions', 'total','users'));
+        return view('sekretariat.dashboard', compact('submissions', 'total','users', 'news'));
     }
     public function penilai()
     {
@@ -41,7 +44,9 @@ class DashboardController extends Controller
         $total = 0;
         if(count($submissions) > 0)
         $total = array_sum($submissions);
-        return view('penilai.dashboard', compact('submissions', 'total'));
+        $news = News::orderBy('created_at', 'DESC')->get();
+
+        return view('penilai.dashboard', compact('submissions', 'total','news'));
     }
     public function prakom()
     {
@@ -53,7 +58,8 @@ class DashboardController extends Controller
         $total = 0;
         if(count($submissions) > 0)
         $total = array_sum($submissions);
-        return view('prakom.dashboard', compact('submissions', 'total'));
+        $news = News::orderBy('created_at', 'DESC')->get();
+        return view('prakom.dashboard', compact('submissions', 'total', 'news'));
     }
 
     public function getPeriode()

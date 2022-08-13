@@ -21,7 +21,6 @@ class UsersTableSeeder extends Seeder
         \DB::table('users')->insert(array (
             // 0 => 
             // array (
-            //     'id' => 1,
             //     'username' => 'dupakprakom',
             //     'email' => 'dupakprakom@gmail.com',
             //     'email_verified_at' => '2022-06-23 04:34:57',
@@ -33,7 +32,6 @@ class UsersTableSeeder extends Seeder
             // ),
             1 => 
             array (
-                'id' => 1,
                 'username' => 'sekretariat',
                 'email' => 'sekretariat@gmail.com',
                 'email_verified_at' => '2022-06-23 21:40:48',
@@ -42,10 +40,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2022-06-23 21:42:12',
                 'updated_at' => '2022-06-23 21:42:16',
-            )/* ,
-            2 => 
+            ),
+            /* 2 => 
             array (
-                'id' => 9,
                 'username' => 'penilai1',
                 'email' => 'penilai1@gmail.com',
                 'email_verified_at' => '2022-06-26 07:17:20',
@@ -57,7 +54,6 @@ class UsersTableSeeder extends Seeder
             ),
             3 => 
             array (
-                'id' => 14,
                 'username' => NULL,
                 'email' => 'pamo@mailinator.com',
                 'email_verified_at' => NULL,
@@ -69,7 +65,6 @@ class UsersTableSeeder extends Seeder
             ),
             4 => 
             array (
-                'id' => 15,
                 'username' => 'prakom1',
                 'email' => 'prakom1@mailinator.com',
                 'email_verified_at' => NULL,

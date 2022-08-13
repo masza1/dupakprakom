@@ -66,6 +66,28 @@
                     </div>
                 </div>
 
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h4>Informasi Terbaru</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @foreach ($news as $item)
+                            <div class="card mb-3">
+                                <div class="card-header" style="padding: 0.2rem 0.2rem;">
+                                    <div class="card-title" style="margin-bottom: 0">
+                                        <p style="margin-bottom: 0">posted {{ $item->posted_date }}</p>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <p>{{ $item->description }}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
         @include('layouts.footer')

@@ -4,6 +4,7 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DetailActivityController;
 use App\Http\Controllers\DetailActivityPenController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PenActivityController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\PositionController;
@@ -80,10 +81,12 @@ Route::prefix('sekretariat')->name('sekretariat.')->middleware('auth')->group(fu
     Route::post('tanda-tangan', [DashboardController::class, 'storeTTD']);
     
     Route::get('riwayat-pengajuan', [PenilaianController::class, 'indexRiwayat'])->name('index-riwayat');
+    Route::get('riwayat-pengajuan-download', [PenilaianController::class, 'downloadRiwayat'])->name('download-riwayat');
     Route::get('pengajuan/{submission_id}/{employee_id}/cetak', [PenilaianController::class, 'cetak'])->name('cetak-pengajuan');
 
     Route::resource('activities', ActivityController::class)->parameters(['activities' => 'id'])->names('activities');
     Route::resource('pen-activities', PenActivityController::class)->parameters(['pen-activities' => 'id'])->names('pen-activities');
+    Route::resource('news', NewsController::class)->parameters(['news' => 'id'])->names('news');
     Route::resource('position', PositionController::class)->parameters(['position' => 'id'])->names('position');
     Route::resource('sub-unsur', SubUnsurController::class)->parameters(['sub-unsur' => 'id'])->names('sub-unsur');
     Route::resource('unsur', UnsurController::class)->parameters(['unsur' => 'id'])->names('unsur');

@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Activity;
-use App\Models\Element;
-use App\Models\Position;
+use App\Models\News;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class ActivityController extends Controller
+class NewsController extends Controller
 {
 
-    public function __construct(Activity $model)
+    public function __construct(News $model)
     {
         $this->model = $model;
     }
@@ -24,14 +22,12 @@ class ActivityController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $activites = $this->modelGetAll(['position' => function ($q) {
-                $q->with(['level']);
-            }, 'element', 'sub_element']);
-            return Datatables::of($activites)->make(true);
+            $positions = $this->modelGetAll();
+            return DataTables::of($positions)->addColumn('posteddate', function($row){
+                return $row->created_at->diffForHumans();
+            })->make(true);
         }
-        // $positions = Position::get();
-        $elements = Element::get();
-        return view('sekretariat.kegiatan.kegiatan-tugas', compact('elements'));
+        return view('sekretariat.news.index');
     }
 
     /**
@@ -53,20 +49,16 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            "position_id" => ['required', 'numeric'],
-            "element_id" => ['required', 'numeric'],
-            "sub_element_id" => ['required', 'numeric'],
-            "description" => ['required', 'string', 'max:3000'],
-            "output" => ['required', 'string'],
-            "credit" => ['required', 'numeric']
+            'description' => ['required', 'string', 'min:3'],
         ]);
 
         if ($this->modelCreate($validated)) {
             return [
                 'status' => true,
-                'message' => 'Berhasil menyimpan data'
+                'message' => 'Berhasil menambahkan data'
             ];
         }
+
         return abort(501, 'Query Failed');
     }
 
@@ -78,12 +70,10 @@ class ActivityController extends Controller
      */
     public function show($id)
     {
-        if ($data = $this->model->with(['position' => function ($q) {
-            $q->with(['level']);
-        }, 'element', 'sub_element'])->find($id)) {
+        if ($data = $this->modelFind($id)) {
             return $data;
         }
-        return abort(501, 'Query Failed');
+        return abort(501, 'Data tidak ditemukan');
     }
 
     /**
@@ -107,20 +97,16 @@ class ActivityController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            "position_id" => ['required', 'numeric'],
-            "element_id" => ['required', 'numeric'],
-            "sub_element_id" => ['required', 'numeric'],
-            "description" => ['required', 'string', 'max:3000'],
-            "output" => ['required', 'string'],
-            "credit" => ['required', 'numeric']
+            'description' => ['required', 'string', 'min:3'],
         ]);
 
         if ($this->modelUpdate($validated, $id)) {
             return [
                 'status' => true,
-                'message' => 'Berhasil menyimpan data'
+                'message' => 'Berhasil mengubah data'
             ];
         }
+
         return abort(501, 'Query Failed');
     }
 
@@ -139,22 +125,5 @@ class ActivityController extends Controller
             ];
         }
         return abort(501, 'Query Failed');
-    }
-
-    public function getActivity(Request $request){
-        if($request->ajax()){
-            $element_id = $request->element_id;
-            $sub_element_id = $request->sub_element_id;
-
-            $activites = $this->model->when($element_id != null, function($q) use ($element_id) {
-                $q->where('element_id', $element_id);
-            })->when($sub_element_id != null, function ($q) use ($sub_element_id) {
-                $q->where('sub_element_id', $sub_element_id);
-            })->when(auth()->user()->level == 'prakom', function($q){
-                $q->where('level_id', '<=', auth()->user()->employee->level_id);
-            })->get();
-
-            return $activites;
-        }
     }
 }

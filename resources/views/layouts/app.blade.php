@@ -115,99 +115,27 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <select id="group_id" name="group_id" class="form-control" required>
-                                            <option value="" selected disabled>-- Pilih Golongan --</option>
-                                            @foreach ($groups as $item)
-                                                <option value="{{ $item->id }}">{{ $item->group_name . ' - ' . $item->rank }}</option>
-                                            @endforeach
+                                        <select id="jenjang_pendidikan" name="jenjang_pendidikan" class="form-control" required>
+                                            <option value="" selected disabled>-- Pilih Jenjang Pendidikan --</option>
+                                            <option value="SD">SD</option>
+                                            <option value="SMP">SMP</option>
+                                            <option value="SMA/SMK">SMA/SMK</option>
+                                            <option value="D1">D1</option>
+                                            <option value="D2">D2</option>
+                                            <option value="D3">D3</option>
+                                            <option value="D4">D4</option>
+                                            <option value="S1">S1</option>
+                                            <option value="S2">S2</option>
+                                            <option value="S3">S3</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <select id="position_id" name="position_id" class="form-control" required>
-                                            <option value="" selected disabled>-- Pilih Jabatan --</option>
-                                            @foreach ($positions as $item)
-                                                <option value="{{ $item->id }}">{{ $item->position_name }}</option>
-                                            @endforeach
-                                        </select>
+                                <div class="col-md-12">
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="institusi" type="text" name="institusi" placeholder="Tempat Lahir" required>
+                                        <label for="institusi">Institusi</label>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <select id="unit_id" name="unit_id" class="form-control" required>
-                                            <option value="" selected disabled>-- Pilih Unit Kerja --</option>
-                                            @foreach ($units as $item)
-                                                <option value="{{ $item->id }}">{{ $item->unit_name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                @if (auth()->user()->level == 'prakom')
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-3">
-                                            <input class="form-control" id="tmt" type="date" name="tmt" placeholder="Tempat Lahir" required>
-                                            <label for="tmt">TMT</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <select id="jenjang_pendidikan" name="jenjang_pendidikan" class="form-control" required>
-                                                <option value="" selected disabled>-- Pilih Jenjang Pendidikan --</option>
-                                                <option value="SD">SD</option>
-                                                <option value="SMP">SMP</option>
-                                                <option value="SMA/SMK">SMA/SMK</option>
-                                                <option value="D1">D1</option>
-                                                <option value="D2">D2</option>
-                                                <option value="D3">D3</option>
-                                                <option value="D4">D4</option>
-                                                <option value="S1">S1</option>
-                                                <option value="S2">S2</option>
-                                                <option value="S3">S3</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-floating mb-3">
-                                            <input class="form-control" id="institusi" type="text" name="institusi" placeholder="Tempat Lahir" required>
-                                            <label for="institusi">Institusi</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="">Masa Kerja Lama</label>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-floating mb-3">
-                                                    <input class="form-control" id="tahun_lama" type="number" name="tahun_lama" step="1" min="1" max="" placeholder="Tempat Lahir">
-                                                    <label for="tahun_lama">Tahun</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-floating mb-3">
-                                                    <input class="form-control" id="bulan_lama" type="number" name="bulan_lama" step="1" min="0" max="12" placeholder="Tempat Lahir">
-                                                    <label for="bulan_lama">Bulan</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="">Masa Kerja Baru</label>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-floating mb-3">
-                                                    <input class="form-control" id="tahun_baru" type="number" name="tahun_baru" step="1" min="1" max="" placeholder="Tempat Lahir">
-                                                    <label for="tahun_baru">Tahun</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-floating mb-3">
-                                                    <input class="form-control" id="bulan_baru" type="number" name="bulan_baru" step="1" min="0" max="12" placeholder="Tempat Lahir">
-                                                    <label for="bulan_baru">Bulan</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
                             </div>
                         </div>
                     </div>
@@ -380,8 +308,9 @@
                         e.preventDefault();
 
                         formAjax($(this), undefined, function(data, status, jqxhr, form) {
-                            baseSwal('success','Success', 'Data berhasil diubah')
-                            $('#canvasEditProfile').find('.btn-close').trigger('click')
+                            baseSwal('success', 'Success', 'Data berhasil diubah')
+                            // $('#canvasEditProfile').find('.btn-close').trigger('click')
+                            window.location.reload()
                         })
                     })
                 })

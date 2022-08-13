@@ -61,6 +61,13 @@
                 </a>
                 <ul class="nav-group-items">
                     <li class="nav-item" style="padding-left: 10px">
+                        <a class="nav-link" href="{{ route('sekretariat.news.index') }}">
+                            <span class="nav-icon">
+                                <i class="fa fa-newspaper"></i>
+                            </span> Informasi
+                        </a>
+                    </li>
+                    <li class="nav-item" style="padding-left: 10px">
                         <a class="nav-link" href="{{ route('sekretariat.position.index') }}">
                             <span class="nav-icon">
                                 <i class="fa fa-id-card"></i>

@@ -9,6 +9,38 @@
                     @include('layouts.notification')
                     <div class="card-header">Riwayat Pengajuan</div>
                     <div class="card-body">
+                        @auth
+                            @if (auth()->user()->level == 'sekretariat')
+                            <form action="" method="get" id="formFilterPengajuan">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group mb-3">
+                                            <select id="filter_tahun" name="filter_tahun" class="form-control" required>
+                                                <option value="" selected disabled>-- Pilih Tahun --</option>
+                                                @for ($i = 2015; $i <= date('Y'); $i++)
+                                                    <option value="{{ $i }}" {{ $i == (request()->filter_tahun ?? date('Y') ) ? 'selected' : '' }}>{{ $i }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group mb-3">
+                                            <select id="filter_semester" name="filter_semester" class="form-control" required>
+                                                <option value="Semester 1" {{ request()->filter_semester == null ? 'selected' : (request()->filter_semester == 'Semester 1' ? 'selected' : '') }}>Semester 1</option>
+                                                <option value="Semester 2" {{ request()->filter_semester == null ? '' : (request()->filter_semester == 'Semester 2' ? 'selected' : '') }}>Semester 2</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" class="btn btn-primary w-100 text-white"><i class="fa fa-search me-2"></i>Filter</button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="button" class="btn btn-success w-100 text-white" id="downloadRiwayatPengajuan"><i class="fa fa-download me-2"></i>Download</button>
+                                    </div>
+                                </div>
+                            </form>
+                            @endif
+                        @endauth
                         <table class="table table-striped border datatable w-100" id="datatableJabatan">
                             <thead>
                                 <tr>
@@ -70,7 +102,7 @@
                     searchDelay: 1500,
                     processing: true,
                     serverSide: true,
-                    scrollX:true,
+                    scrollX: true,
                     order: [
                         [0, 'asc']
                     ],
@@ -149,6 +181,21 @@
                     }]
                 })
             }
+
+            $('#formFilterPengajuan').on('submit', function(e){
+                e.preventDefault();
+                let filter_tahun = $('#filter_tahun').val();
+                let filter_semester = $('#filter_semester').val()
+                let url = datatableURL + '?filter_tahun=' + filter_tahun + '&filter_semester=' + filter_semester;
+                datatable.ajax.url(url).load();
+            })
+            $('#downloadRiwayatPengajuan').on('click', function(e){
+                let filter_tahun = $('#filter_tahun').val();
+                let filter_semester = $('#filter_semester').val()
+                let url = '{{ route('sekretariat.download-riwayat') }}'
+                url += '?filter_tahun=' + filter_tahun + '&filter_semester=' + filter_semester + '&download=true';
+                window.open(url, '_blank');
+            })
 
             $(document).on('click', '#btnAddSubmission', function(e) {
                 let btn = $(this)

@@ -14,13 +14,12 @@
                                 <tr>
                                     <th class="text-center text-uppercase" style="width: 5%">No</th>
                                     <th class="text-center text-uppercase" style="width: 10%">NIP</th>
-                                    <th class="text-center text-uppercase" style="width: 15%">Nama</th>
                                     <th class="text-center text-uppercase" style="width: 15%">Email</th>
                                     <th class="text-center text-uppercase" style="width: 15%">Username</th>
-                                    <th class="text-center text-uppercase" style="width: 15%">Golongan</th>
-                                    <th class="text-center text-uppercase" style="width: 15%">Peringkat</th>
-                                    <th class="text-center text-uppercase" style="width: 15%">Jabatan</th>
-                                    <th class="text-center text-uppercase" style="width: 15%">Unit</th>
+                                    <th class="text-center text-uppercase" style="width: 15%">Nama</th>
+                                    <th class="text-center text-uppercase" style="width: 15%">Jenis Kelamin</th>
+                                    <th class="text-center text-uppercase" style="width: 15%">Jenjang Pendidikan</th>
+                                    <th class="text-center text-uppercase" style="width: 15%">Institusi</th>
                                     <th class="text-center text-uppercase" style="width: 10%">Actions</th>
                                 </tr>
                             </thead>
@@ -112,32 +111,25 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group mb-3">
-                            <select id="group_id" name="group_id" class="form-control" required>
-                                <option value="" selected disabled>-- Pilih Golongan --</option>
-                                @foreach ($groups as $item)
-                                <option value="{{ $item->id }}">{{ $item->group_name . ' - ' . $item->rank }}</option>
-                                @endforeach
+                            <select id="jenjang_pendidikan" name="jenjang_pendidikan" class="form-control" required>
+                                <option value="" selected disabled>-- Pilih Jenjang Pendidikan --</option>
+                                <option value="SD">SD</option>
+                                <option value="SMP">SMP</option>
+                                <option value="SMA/SMK">SMA/SMK</option>
+                                <option value="D1">D1</option>
+                                <option value="D2">D2</option>
+                                <option value="D3">D3</option>
+                                <option value="D4">D4</option>
+                                <option value="S1">S1</option>
+                                <option value="S2">S2</option>
+                                <option value="S3">S3</option>
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <select id="position_id" name="position_id" class="form-control" required>
-                                <option value="" selected disabled>-- Pilih Jabatan --</option>
-                                @foreach ($positions as $item)
-                                <option value="{{ $item->id }}">{{ $item->position_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <select id="unit_id" name="unit_id" class="form-control" required>
-                                <option value="" selected disabled>-- Pilih Unit Kerja --</option>
-                                @foreach ($units as $item)
-                                <option value="{{ $item->id }}">{{ $item->unit_name }}</option>
-                                @endforeach
-                            </select>
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="institusi" type="text" name="institusi" placeholder="Tempat Lahir" required>
+                            <label for="institusi">Institusi</label>
                         </div>
                     </div>
                 </div>
@@ -207,12 +199,6 @@
                         },
                         {
                             className: 'align-middle border-bottom',
-                            data: 'employee.name',
-                            orderable: true,
-                            searchable: true,
-                        },
-                        {
-                            className: 'align-middle border-bottom',
                             data: 'email',
                             orderable: true,
                             searchable: true,
@@ -225,25 +211,25 @@
                         },
                         {
                             className: 'align-middle border-bottom',
-                            data: 'employee.group.group_name',
+                            data: 'employee.name',
                             orderable: true,
                             searchable: true,
                         },
                         {
                             className: 'align-middle border-bottom',
-                            data: 'employee.group.rank',
+                            data: 'employee.gender',
                             orderable: true,
                             searchable: true,
                         },
                         {
                             className: 'align-middle border-bottom',
-                            data: 'employee.position.position_name',
+                            data: 'employee.jenjang_pendidikan',
                             orderable: true,
                             searchable: true,
                         },
                         {
                             className: 'align-middle border-bottom',
-                            data: 'employee.unit.unit_name',
+                            data: 'employee.institusi',
                             orderable: true,
                             searchable: true,
                         },
@@ -307,9 +293,8 @@
                         modal.find('input[name="birthplace"]').val(response.employee.birthplace)
                         modal.find('input[name="birthdate"]').val(response.employee.birthdate)
                         modal.find('select[name="gender"]').val(response.employee.gender).trigger('change')
-                        modal.find('select[name="group_id"]').val(response.employee.group_id).trigger('change')
-                        modal.find('select[name="position_id"]').val(response.employee.position_id).trigger('change')
-                        modal.find('select[name="unit_id"]').val(response.employee.unit_id).trigger('change')
+                        modal.find('select[name="jenjang_pendidikan"]').val(response.employee.jenjang_pendidikan).trigger('change')
+                        modal.find('select[name="institusi"]').val(response.employee.institusi).trigger('change')
                     })
                 } else {
                     modal.find('input[type="password"]').prop('required', true)

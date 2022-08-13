@@ -60,6 +60,8 @@ class SubmissionController extends Controller
             "skp2" => ['required', 'file'],
             "ijazah" => ['required', 'file'],
             "spmk" => ['required', 'file'],
+            "p_mulai_pengisian" => ['required', 'date'],
+            "p_akhir_pengisian" => ['required', 'date', 'after_or_equal:p_mulai_pengisian'],
         ]);
         $files = [];
         $validated['surat_pengantar'] = $this->storeFile('surat_pengantar', 'pengajuan');
@@ -77,7 +79,7 @@ class SubmissionController extends Controller
         if (!empty($pengajuan)) {
             $number = $pengajuan->number;
             $number = substr($number, 3);
-            $validated += ['number' => 'DPK'. ($number + 1)];
+            $validated += ['number' => 'DPK' . ($number + 1)];
         } else {
             $validated += ['number' => 'DPK1000001'];
         }
@@ -116,7 +118,7 @@ class SubmissionController extends Controller
     public function edit($id)
     {
         if ($submission = Submission::with('employee')->find($id)) {
-            if($submission->status != 'DRAFT' && $submission->status != 'REVISI'){
+            if ($submission->status != 'DRAFT' && $submission->status != 'REVISI') {
                 return back()->withErrors(['message' => 'Anda tidak dapat merubah data karena dalam tahap pengajuan']);
             }
             $elements = Element::get();
@@ -136,13 +138,13 @@ class SubmissionController extends Controller
     {
         if ($request->ajukan !== NULL && $request->ajukan == 'true') {
             $submission = $this->model->whereHas('detail_activities')->whereHas('detail_pen_activities')->where('id', $id)->first();
-            if($submission == null){
+            if ($submission == null) {
                 return back()->withErrors(['message' => 'Silahkan mengisi detail kegiatan utama dan penunjang sebelum mengajukan']);
             }
             if ($periode = Periode::first()) {
-                if($periode->start_date <= date('Y-m-d') && $periode->end_date >= date('Y-m-d')){
+                if ($periode->start_date <= date('Y-m-d') && $periode->end_date >= date('Y-m-d')) {
                     $validated = ['submission_date' => date('Y-m-d')];
-    
+
                     $validated += ['status' => 'PENGAJUAN'];
                     $validated += ['start_date' => $periode->start_date];
                     $validated += ['end_date' => $periode->end_date];
@@ -164,6 +166,8 @@ class SubmissionController extends Controller
                 "skp2" => ['nullable', 'file'],
                 "ijazah" => ['nullable', 'file'],
                 "spmk" => ['nullable', 'file'],
+                "p_mulai_pengisian" => ['required', 'date'],
+                "p_akhir_pengisian" => ['required', 'date', 'after_or_equal:p_mulai_pengisian'],
             ]);
             $files = [];
             if ($submission = $this->modelFind($id)) {

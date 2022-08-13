@@ -21,6 +21,7 @@ class CreateActivitiesTable extends Migration
             $table->foreignId('element_id')->constrained('elements');
             $table->foreignId('sub_element_id')->constrained('sub_elements');
             $table->foreignId('position_id')->constrained('positions');
+            $table->foreignId('level_id')->constrained('levels')->nullable();
             $table->timestamps();
         });
     }

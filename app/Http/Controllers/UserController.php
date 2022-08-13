@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\Level;
+use App\Models\Nilai;
 use App\Models\Position;
 use App\Models\Unit;
 use App\Models\User;
@@ -41,7 +43,8 @@ class UserController extends Controller
             return Datatables::of($users)->make(true);
         }
         if (request()->tab == 'prakom') {
-            return view('sekretariat.users.prakom');
+            $levels = Level::get();
+            return view('sekretariat.users.prakom', compact('levels'));
         }
         return view('sekretariat.users.index');
     }
@@ -77,21 +80,23 @@ class UserController extends Controller
             "birthplace" => ['required', 'string', 'max:150'],
             "birthdate" => ['required', 'date'],
             "gender" => ['required', 'in:L,P'],
-            "group_id" => ['required', 'numeric'],
-            "position_id" => ['required', 'numeric'],
-            "unit_id" => ['required', 'numeric']
+            "jenjang_pendidikan" => ['required', 'string', 'max:100'],
+            "institusi" => ['required', 'string', 'max:255'],
         ]);
 
         if ($request->tab == 'prakom') {
             $validatedDetail += $request->validate([
-                "jenjang_pendidikan" => ['required', 'string', 'max:100'],
-                "institusi" => ['required', 'string', 'max:255'],
+                "group_id" => ['required', 'numeric'],
+                "position_id" => ['required', 'numeric'],
+                "unit_id" => ['required', 'numeric'],
+                "level_id" => ['required', 'numeric', 'in:1,2'],
                 "tmt" => ['required', 'date'],
                 "bulan_lama" => ['required', 'numeric'],
                 "tahun_lama" => ['required', 'numeric'],
                 "bulan_baru" => ['required', 'numeric'],
                 "tahun_baru" => ['required', 'numeric'],
             ]);
+            $validatedDetail['level_id'] = $request->level_id;
             $validatedUser += ['level' => 'prakom'];
         } else {
             $validatedUser += ['level' => 'penilai'];
@@ -101,6 +106,13 @@ class UserController extends Controller
         try {
             $user = $this->modelCreate($validatedUser);
             $user->employee()->create($validatedDetail);
+            if($validatedUser['level'] == 'prakom'){
+                Nilai::create([
+                    'user_id' => $user->id,
+                    'employee_id' => $user->employee->id,
+                    'isNew' => true,
+                ]);
+            }
             DB::commit();
             return [
                 'status' => true,
@@ -179,15 +191,15 @@ class UserController extends Controller
             "birthplace" => ['required', 'string', 'max:150'],
             "birthdate" => ['required', 'date'],
             "gender" => ['required', 'in:L,P'],
-            "group_id" => ['required', 'numeric'],
-            "position_id" => ['required', 'numeric'],
-            "unit_id" => ['required', 'numeric'],
+            "jenjang_pendidikan" => ['required', 'string', 'max:100'],
+            "institusi" => ['required', 'string', 'max:255'],
         ]);
 
-        if (auth()->user()->level == 'prakom') {
+        if (auth()->user()->level == 'prakom' && auth()->user()->level == 'sekretariat') {
             $validatedDetail += $request->validate([
-                "jenjang_pendidikan" => ['required', 'string', 'max:100'],
-                "institusi" => ['required', 'string', 'max:255'],
+                "group_id" => ['required', 'numeric'],
+                "position_id" => ['required', 'numeric'],
+                "unit_id" => ['required', 'numeric'],
                 "tmt" => ['required', 'date'],
                 "bulan_lama" => ['required', 'numeric'],
                 "tahun_lama" => ['required', 'numeric'],

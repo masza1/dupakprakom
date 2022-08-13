@@ -256,11 +256,11 @@ function fillForm(parent = undefined, index = []) {
                             $('#loading').css('display', 'none');
                         } else {
                             lastTrigger = 'running';
-                            timer = setTimeout(run, 500)
+                            timer = setTimeout(run, 1000)
                         }
                     } else {
                         lastTrigger = 'running';
-                        timer = setTimeout(run, 500)
+                        timer = setTimeout(run, 1000)
                     }
                 }, 500)
             } else if (value.type == 'file' && value.addButton != undefined) {

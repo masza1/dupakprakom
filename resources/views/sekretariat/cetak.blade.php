@@ -285,350 +285,57 @@
                 <tr>
                     <td class="align-middle text-center fs-14" style="width:4%;">1.</td>
                     <td class="align-middle fs-14" style="padding: 5px 4px">Tata Kelola dan Tata Laksana Teknologi Informasi</td>
-                    @php
-                        $total_tata_kelola = 0;
-                        $total_infrastruktur = 0;
-                        $total_sistem = 0;
-                        $total_pengembangan = 0;
-                        $total_penunjang = 0;
-                        $mustBreak = false;
-                        $total_lama = 0;
-                        $total_baru = 0;
-                        $total_jumlah = 0;
-                    @endphp
-                    @if ($oldSubmission != null)
-                        @forelse ($oldSubmission->detail_activities as $item)
-                            @if ($item->element_id == 1)
-                                @php
-                                    $total_tata_kelola += $item->grand_total_credit;
-                                    $total_lama += $item->grand_total_credit;
-                                    $total_jumlah += $item->grand_total_credit;
-                                    $mustBreak = true;
-                                @endphp
-                                <td class="align-middle text-center fs-14">{{ $item->grand_total_credit }}</td>
-                            @else
-                                @php
-                                    $mustBreak = false;
-                                @endphp
-                            @endif
-                        @empty
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @endforelse
-                        @if ($mustBreak)
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @else
-                            <td class="align-middle text-center fs-14">-</td>
-                        @endif
-                    @else
-                        <td class="align-middle text-center fs-14">-</td>
-                    @endif
-                    @if ($newSubmission != null)
-                        @forelse ($newSubmission->detail_activities as $item)
-                            @if ($item->element_id == 1)
-                                @php
-                                    $total_tata_kelola += $item->grand_total_credit;
-                                    $total_baru += $item->grand_total_credit;
-                                    $total_jumlah += $item->grand_total_credit;
-                                    $mustBreak = true;
-                                @endphp
-                                <td class="align-middle text-center fs-14">{{ $item->grand_total_credit }}</td>
-                            @else
-                                @php
-                                    $mustBreak = false;
-                                @endphp
-                            @endif
-                        @empty
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @endforelse
-                        @if ($mustBreak)
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @else
-                            <td class="align-middle text-center fs-14">-</td>
-                        @endif
-                    @else
-                        <td class="align-middle text-center fs-14">-</td>
-                    @endif
-                    <td class="align-middle text-center fs-14">{{ $total_tata_kelola }}</td>
+                    <td class="align-middle text-center fs-14">{{ $nilai->nilai_lama1 == null ? '-' : $nilai->nilai_lama1 }}</td>
+                    <td class="align-middle text-center fs-14">{{ $nilai->nilai_baru1 == null ? '-' : $nilai->nilai_baru1 }}</td>
+                    <td class="align-middle text-center fs-14">{{ ($nilai->nilai_lama1 == null ? 0 : $nilai->nilai_lama1) + ($nilai->nilai_baru1 == null ? 0 : $nilai->nilai_baru1) }}</td>
                 </tr>
                 <tr>
                     <td class="align-middle text-center fs-14 fs-14" style="width:4%;">2.</td>
                     <td class="align-middle fs-14" style="padding: 5px 4px">Infrastruktur Teknologi Informasi</td>
-                    @if ($oldSubmission != null)
-                        @forelse ($oldSubmission->detail_activities as $item)
-                            @if ($item->element_id == 2)
-                                @php
-                                    $total_infrastruktur += $item->grand_total_credit;
-                                    $total_lama += $item->grand_total_credit;
-                                    $total_jumlah += $item->grand_total_credit;
-                                    $mustBreak = true;
-                                @endphp
-                                <td class="align-middle text-center fs-14">{{ $item->grand_total_credit }}</td>
-                            @else
-                                @php
-                                    $mustBreak = false;
-                                @endphp
-                            @endif
-                        @empty
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @endforelse
-                        @if ($mustBreak)
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @else
-                            <td class="align-middle text-center fs-14">-</td>
-                        @endif
-                    @else
-                        <td class="align-middle text-center fs-14">-</td>
-                    @endif
-                    @if ($newSubmission != null)
-                        @forelse ($newSubmission->detail_activities as $item)
-                            @if ($item->element_id == 2)
-                                @php
-                                    $total_infrastruktur += $item->grand_total_credit;
-                                    $total_baru += $item->grand_total_credit;
-                                    $total_jumlah += $item->grand_total_credit;
-                                    $mustBreak = true;
-                                @endphp
-                                <td class="align-middle text-center fs-14">{{ $item->grand_total_credit }}</td>
-                            @else
-                                @php
-                                    $mustBreak = false;
-                                @endphp
-                            @endif
-                        @empty
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @endforelse
-                        @if ($mustBreak)
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @else
-                            <td class="align-middle text-center fs-14">-</td>
-                        @endif
-                    @else
-                        <td class="align-middle text-center fs-14">-</td>
-                    @endif
-                    <td class="align-middle text-center fs-14">{{ $total_infrastruktur }}</td>
+                    <td class="align-middle text-center fs-14">{{ $nilai->nilai_lama2 == null ? '-' : $nilai->nilai_lama2 }}</td>
+                    <td class="align-middle text-center fs-14">{{ $nilai->nilai_baru2 == null ? '-' : $nilai->nilai_baru2 }}</td>
+                    <td class="align-middle text-center fs-14">{{ ($nilai->nilai_lama2 == null ? 0 : $nilai->nilai_lama2) + ($nilai->nilai_baru2 == null ? 0 : $nilai->nilai_baru2) }}</td>
                 </tr>
                 <tr>
                     <td class="align-middle text-center fs-14 fs-14" style="width:4%;">3.</td>
                     <td class="align-middle fs-14" style="padding: 5px 4px">Sistem Informasi dan Multimedia</td>
-                    @if ($oldSubmission != null)
-                        @forelse ($oldSubmission->detail_activities as $item)
-                            @if ($item->element_id == 3)
-                                @php
-                                    $total_sistem += $item->grand_total_credit;
-                                    $total_lama += $item->grand_total_credit;
-                                    $total_jumlah += $item->grand_total_credit;
-                                    $mustBreak = true;
-                                @endphp
-                                <td class="align-middle text-center fs-14">{{ $item->grand_total_credit }}</td>
-                            @else
-                                @php
-                                    $mustBreak = false;
-                                @endphp
-                            @endif
-                        @empty
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @endforelse
-                        @if ($mustBreak)
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @else
-                            <td class="align-middle text-center fs-14">-</td>
-                        @endif
-                    @else
-                        <td class="align-middle text-center fs-14">-</td>
-                    @endif
-                    @if ($newSubmission != null)
-                        @forelse ($newSubmission->detail_activities as $item)
-                            @if ($item->element_id == 3)
-                                @php
-                                    $total_sistem += $item->grand_total_credit;
-                                    $total_baru += $item->grand_total_credit;
-                                    $total_jumlah += $item->grand_total_credit;
-                                    $mustBreak = true;
-                                @endphp
-                                <td class="align-middle text-center fs-14">{{ $item->grand_total_credit }}</td>
-                            @else
-                                @php
-                                    $mustBreak = false;
-                                @endphp
-                            @endif
-                        @empty
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @endforelse
-                        @if ($mustBreak)
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @else
-                            <td class="align-middle text-center fs-14">-</td>
-                        @endif
-                    @else
-                        <td class="align-middle text-center fs-14">-</td>
-                    @endif
-                    <td class="align-middle text-center fs-14">{{ $total_sistem }}</td>
+                    <td class="align-middle text-center fs-14">{{ $nilai->nilai_lama3 == null ? '-' : $nilai->nilai_lama3 }}</td>
+                    <td class="align-middle text-center fs-14">{{ $nilai->nilai_baru3 == null ? '-' : $nilai->nilai_baru3 }}</td>
+                    <td class="align-middle text-center fs-14">{{ ($nilai->nilai_lama3 == null ? 0 : $nilai->nilai_lama3) + ($nilai->nilai_baru3 == null ? 0 : $nilai->nilai_baru3) }}</td>
                 </tr>
                 <tr>
                     <td colspan="2" class="align-middle text-center fs-14"><b>Jumlah Tugas Jabatan</b></td>
-                    <td class="align-middle text-center fs-14">{{ $total_lama }}</td>
-                    <td class="align-middle text-center fs-14">{{ $total_baru }}</td>
-                    <td class="align-middle text-center fs-14">{{ $total_jumlah }}</td>
+                    <td class="align-middle text-center fs-14">{{ ($nilai->nilai_lama1 == null ? 0 : $nilai->nilai_lama1) + ($nilai->nilai_lama2 == null ? 0 : $nilai->nilai_lama2) + ($nilai->nilai_lama3 == null ? 0 : $nilai->nilai_lama3) }}</td>
+                    <td class="align-middle text-center fs-14">{{ ($nilai->nilai_baru1 == null ? 0 : $nilai->nilai_baru1) + ($nilai->nilai_baru2 == null ? 0 : $nilai->nilai_baru2) + ($nilai->nilai_baru3 == null ? 0 : $nilai->nilai_baru3) }}</td>
+                    <td class="align-middle text-center fs-14">
+                        {{ ($nilai->nilai_lama1 == null ? 0 : $nilai->nilai_lama1) + ($nilai->nilai_lama2 == null ? 0 : $nilai->nilai_lama2) + ($nilai->nilai_lama3 == null ? 0 : $nilai->nilai_lama3) + ($nilai->nilai_baru1 == null ? 0 : $nilai->nilai_baru1) + ($nilai->nilai_baru2 == null ? 0 : $nilai->nilai_baru2) + ($nilai->nilai_baru3 == null ? 0 : $nilai->nilai_baru3) }}
+                    </td>
                 </tr>
                 <tr>
                     <td class="text-center fs-14" style="width: 5%;vertical-align: top">II</td>
                     <td colspan="2" class="align-middle fs-14" style="padding: 5px 4px">Pengembangan Profesi</td>
-                    @if ($oldSubmission != null)
-                        @forelse ($oldSubmission->detail_activities as $item)
-                            @if ($item->element_id == 4)
-                                @php
-                                    $total_pengembangan += $item->grand_total_credit;
-                                    $total_lama += $item->grand_total_credit;
-                                    $total_jumlah += $item->grand_total_credit;
-                                    $mustBreak = true;
-                                @endphp
-                                <td class="align-middle text-center fs-14">{{ $item->grand_total_credit }}</td>
-                            @else
-                                @php
-                                    $mustBreak = false;
-                                @endphp
-                            @endif
-                        @empty
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @endforelse
-                        @if ($mustBreak)
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @else
-                            <td class="align-middle text-center fs-14">-</td>
-                        @endif
-                    @else
-                        <td class="align-middle text-center fs-14">-</td>
-                    @endif
-                    @if ($newSubmission != null)
-                        @forelse ($newSubmission->detail_activities as $item)
-                            @if ($item->element_id == 4)
-                                @php
-                                    $total_pengembangan += $item->grand_total_credit;
-                                    $total_baru += $item->grand_total_credit;
-                                    $total_jumlah += $item->grand_total_credit;
-                                    $mustBreak = true;
-                                @endphp
-                                <td class="align-middle text-center fs-14">{{ $item->grand_total_credit }}</td>
-                            @else
-                                @php
-                                    $mustBreak = false;
-                                @endphp
-                            @endif
-                        @empty
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @endforelse
-                        @if ($mustBreak)
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @else
-                            <td class="align-middle text-center fs-14">-</td>
-                        @endif
-                    @else
-                        <td class="align-middle text-center fs-14">-</td>
-                    @endif
-                    <td class="align-middle text-center fs-14">{{ $total_pengembangan }}</td>
+                    <td class="align-middle text-center fs-14">{{ $nilai->nilai_lama4 == null ? '-' : $nilai->nilai_lama4 }}</td>
+                    <td class="align-middle text-center fs-14">{{ $nilai->nilai_baru4 == null ? '-' : $nilai->nilai_baru4 }}</td>
+                    <td class="align-middle text-center fs-14">{{ ($nilai->nilai_lama4 == null ? 0 : $nilai->nilai_lama4) + ($nilai->nilai_baru4 == null ? 0 : $nilai->nilai_baru4) }}</td>
                 </tr>
                 <tr>
                     <td class="text-center fs-14" style="width: 5%;vertical-align: top">III</td>
                     <td colspan="2" class="align-middle fs-14" style="padding: 5px 4px">Penunjang Tugas Pejabat Pranata Komputer</td>
-                    @if ($oldSubmission != null)
-                        @forelse ($oldSubmission->detail_activities as $item)
-                            @if ($item->element_id == 5)
-                                @php
-                                    $total_penunjang += $item->grand_total_credit;
-                                    $total_lama += $item->grand_total_credit;
-                                    $total_jumlah += $item->grand_total_credit;
-                                    $mustBreak = true;
-                                @endphp
-                                <td class="align-middle text-center fs-14">{{ $item->grand_total_credit }}</td>
-                            @else
-                                @php
-                                    $mustBreak = false;
-                                @endphp
-                            @endif
-                        @empty
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @endforelse
-                        @if ($mustBreak)
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @else
-                            <td class="align-middle text-center fs-14">-</td>
-                        @endif
-                    @else
-                        <td class="align-middle text-center fs-14">-</td>
-                    @endif
-                    @if ($newSubmission != null)
-                        @forelse ($newSubmission->detail_activities as $item)
-                            @if ($item->element_id == 5)
-                                @php
-                                    $total_penunjang += $item->grand_total_credit;
-                                    $total_baru += $item->grand_total_credit;
-                                    $total_jumlah += $item->grand_total_credit;
-                                    $mustBreak = true;
-                                @endphp
-                                <td class="align-middle text-center fs-14">{{ $item->grand_total_credit }}</td>
-                            @else
-                                @php
-                                    $mustBreak = false;
-                                @endphp
-                            @endif
-                        @empty
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @endforelse
-                        @if ($mustBreak)
-                            @php
-                                $mustBreak = false;
-                            @endphp
-                        @else
-                            <td class="align-middle text-center fs-14">-</td>
-                        @endif
-                    @else
-                        <td class="align-middle text-center fs-14">-</td>
-                    @endif
-                    <td class="align-middle text-center fs-14">{{ $total_penunjang }}</td>
+                    <td class="align-middle text-center fs-14">{{ $nilai->nilai_lama5 == null ? '-' : $nilai->nilai_lama5 }}</td>
+                    <td class="align-middle text-center fs-14">{{ $nilai->nilai_baru5 == null ? '-' : $nilai->nilai_baru5 }}</td>
+                    <td class="align-middle text-center fs-14">{{ ($nilai->nilai_lama5 == null ? 0 : $nilai->nilai_lama5) + ($nilai->nilai_baru5 == null ? 0 : $nilai->nilai_baru5) }}</td>
                 </tr>
                 <tr>
                     <td colspan="3" class="align-middle text-center fs-14"><b>JUMLAH (I + II + III)</b></td>
-                    <td class="align-middle text-center fs-14">{{ $total_lama }}</td>
-                    <td class="align-middle text-center fs-14">{{ $total_baru }}</td>
-                    <td class="align-middle text-center fs-14">{{ $total_jumlah }}</td>
+                    <td class="align-middle text-center fs-14">
+                        {{ ($nilai->nilai_lama1 == null ? 0 : $nilai->nilai_lama1) + ($nilai->nilai_lama2 == null ? 0 : $nilai->nilai_lama2) + ($nilai->nilai_lama3 == null ? 0 : $nilai->nilai_lama3) + ($nilai->nilai_lama4 == null ? 0 : $nilai->nilai_lama4) + ($nilai->nilai_lama5 == null ? 0 : $nilai->nilai_lama5) }}
+                    </td>
+                    <td class="align-middle text-center fs-14">
+                        {{ ($nilai->nilai_baru1 == null ? 0 : $nilai->nilai_baru1) + ($nilai->nilai_baru2 == null ? 0 : $nilai->nilai_baru2) + ($nilai->nilai_baru3 == null ? 0 : $nilai->nilai_baru3) + ($nilai->nilai_baru4 == null ? 0 : $nilai->nilai_baru4) + ($nilai->nilai_baru5 == null ? 0 : $nilai->nilai_baru5) }}
+                    </td>
+                    <td class="align-middle text-center fs-14">
+                        {{ ($nilai->nilai_lama1 == null ? 0 : $nilai->nilai_lama1) + ($nilai->nilai_lama2 == null ? 0 : $nilai->nilai_lama2) + ($nilai->nilai_lama3 == null ? 0 : $nilai->nilai_lama3) + ($nilai->nilai_lama4 == null ? 0 : $nilai->nilai_lama4) + ($nilai->nilai_lama5 == null ? 0 : $nilai->nilai_lama5) + ($nilai->nilai_baru1 == null ? 0 : $nilai->nilai_baru1) + ($nilai->nilai_baru2 == null ? 0 : $nilai->nilai_baru2) + ($nilai->nilai_baru3 == null ? 0 : $nilai->nilai_baru3) + ($nilai->nilai_baru4 == null ? 0 : $nilai->nilai_baru4) + ($nilai->nilai_baru5 == null ? 0 : $nilai->nilai_baru5) }}
+                    </td>
                 </tr>
                 <tr>
                     <th class="align-middle text-center" style="width: 8%">III</th>

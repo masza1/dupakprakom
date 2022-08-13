@@ -7,17 +7,14 @@
             <div class="container-lg">
                 <div class="card mb-4">
                     @include('layouts.notification')
-                    <div class="card-header">Riwayat Pengajuan</div>
+                    <div class="card-header">Informasi</div>
                     <div class="card-body">
-                        <table class="table table-striped border datatable w-100" id="datatableJabatan">
+                        <table class="table table-striped border datatable w-100" id="datatableInformasi">
                             <thead>
                                 <tr>
-                                    <th class="text-center text-uppercase" style="width: 5%">Nomor</th>
-                                    <th class="text-center text-uppercase" style="width: 10%">Tanggal Pengajuan</th>
-                                    <th class="text-center text-uppercase" style="width: 10%">Nama Pegawai</th>
-                                    <th class="text-center text-uppercase" style="width: 10%">Masa Awal Pengisian</th>
-                                    <th class="text-center text-uppercase" style="width: 10%">Masa Akhir Pengisian</th>
-                                    <th class="text-center text-uppercase" style="width: 10%">Status</th>
+                                    <th class="text-center text-uppercase" style="width: 5%">No</th>
+                                    <th class="text-center text-uppercase" style="width: 30%">Informasi</th>
+                                    <th class="text-center text-uppercase" style="width: 10%">Tanggal Dibuat</th>
                                     <th class="text-center text-uppercase" style="width: 10%">Actions</th>
                                 </tr>
                             </thead>
@@ -32,18 +29,32 @@
         @include('layouts.footer')
     </div>
 @endsection
+@push('modal')
+    <x-base-modal id="modalAddInformasi" :modalWidth="__('md')" :formId="__('formAddInformasi')" withForm="true">
+        <x-slot name="modalTitle">Tambah Informasi</x-slot>
+        <x-slot name="buttonSubmit">
+            <button class="btn btn-primary btn-sm" type="submit">Simpan</button>
+        </x-slot>
+
+        <div class="row">
+            <div class="col-md-12">
+                <textarea name="description" class="form-control" placeholder="Masukkan Informasi" cols="30" rows="10" style="resize: none"></textarea>
+            </div>
+        </div>
+
+    </x-base-modal>
+@endpush
 @push('js')
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
             var initial = {}
-            var datatableURL = '{{ route('prakom.pengajuan.index') }}'
+            var datatableURL = '{{ route('sekretariat.news.index') }}'
             var datatable;
 
             initialDatatable(initial);
 
             function initialDatatable(dataTableData) {
-                datatable = $('#datatableJabatan').DataTable({
+                datatable = $('#datatableInformasi').DataTable({
                     dom: "<'row'<'col-sm-12 col-md-6 mb-2'B>>" +
                         "<'row justify-content-between'<'col-sm-12 col-md-2'l><'col-sm-12 col-md-4 d-flex justify-content-end'f>>" +
                         "<'row'<'col-sm-12'rtr>>" +
@@ -70,7 +81,6 @@
                     searchDelay: 1500,
                     processing: true,
                     serverSide: true,
-                    scrollX:true,
                     order: [
                         [0, 'asc']
                     ],
@@ -80,40 +90,22 @@
                     },
                     columns: [{
                             className: 'align-middle text-center border-bottom',
-                            data: 'number',
-                            orderable: true,
-                            searchable: true,
+                            data: null,
+                            searchable: false,
+                            render: function(data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
                         },
                         {
                             className: 'align-middle border-bottom',
-                            data: 'submission_date',
+                            data: 'description',
                             // name:'name',
                             orderable: true,
-                            searchable: true
-                        },
-                        {
-                            className: 'align-middle border-bottom',
-                            data: 'employee.name',
-                            orderable: true,
                             searchable: true,
                         },
                         {
                             className: 'align-middle border-bottom',
-                            data: 'p_mulai_pengisian',
-                            orderable: true,
-                            searchable: true,
-                        },
-                        {
-                            className: 'align-middle border-bottom',
-                            data: 'p_akhir_pengisian',
-                            orderable: true,
-                            searchable: true,
-                        },
-                        {
-                            className: 'align-middle border-bottom',
-                            data: 'status',
-                            orderable: true,
-                            searchable: true,
+                            data: 'posteddate',
                         },
                         {
                             className: 'align-middle text-center border-bottom',
@@ -122,16 +114,8 @@
                             searchable: false,
                             render: function(data, type, row) {
                                 let html = '';
-                                let url = `{{ route('prakom.pengajuan.index') }}/` + data.id
-                                let csrf = '<input type="hidden" name="_token" value="{!! csrf_token() !!}">'
-                                let method = '<input type="hidden" name="_method" value="PUT">'
-                                if (data.status == 'DRAFT' || data.status == 'REVISI') {
-                                    html += `<form action="${url}?ajukan=true" method="POST" style="display:inline-block" class="formAjukan">${csrf}${method}<button class="btn btn-primary btn-sm text-white mx-1" type="submit"><i class="fa fa-paper-plane"></i></button></form>`
-                                    html += `<a href="${url}/edit" class="btn btn-warning btn-sm text-white mx-1"><i class="fa fa-pencil-alt"></i></a>`;
-                                    html += `<button class="btn btn-danger btn-sm text-white mx-1" data-coreui-target="#modalDelete" data-coreui-toggle="modal" data-id="${data.id}" data-url="{!! route('prakom.pengajuan.destroy', ['id' => ' ']) !!}" ><i class="fa fa-trash"></i></button>`;
-                                } else {
-                                    html += `<a href="${url}?view=detail" class="btn btn-success btn-sm text-white mx-1"><i class="fa fa-eye"></i></a>`;
-                                }
+                                html += `<button class="btn btn-warning btn-sm text-white mx-1" data-coreui-target="#modalAddInformasi" data-coreui-toggle="modal" data-id="${data.id}" ><i class="fa fa-pencil-alt"></i></button>`;
+                                html += `<button class="btn btn-danger btn-sm text-white mx-1" data-coreui-target="#modalDelete" data-coreui-toggle="modal" data-id="${data.id}" data-url="{!! route('sekretariat.news.destroy', ['id' => ' ']) !!}" ><i class="fa fa-trash"></i></button>`;
                                 return html;
                             }
                         }
@@ -141,11 +125,12 @@
                         defaultContent: '<div class="text-center align-middle">-</div>'
                     }],
                     buttons: [{
-                        text: 'Tambah Pengajuan',
+                        text: 'Tambah Informasi',
                         className: 'btn btn-success btn-sm text-white',
                         attr: {
-                            id: 'btnAddSubmission',
-                            'data-url': '{{ route('prakom.pengajuan.create') }}'
+                            id: 'btnAddInformasi',
+                            'data-coreui-toggle': 'modal',
+                            'data-coreui-target': '#modalAddInformasi',
                         },
                     }, {
                         text: 'Refresh Data',
@@ -157,25 +142,41 @@
                 })
             }
 
-            $(document).on('submit', '.formAjukan', function(e){
-                e.preventDefault();
-                let form = $(this);
-                Swal.fire({
-                    title: 'Yakin ingin mengajukan pengajuan ini?',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, Lanjutkan!',
-                    denyButtonText: `Tidak, Batalkan!`,
-                }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
-                    if (result.isConfirmed) {
-                        e.currentTarget.submit()
-                    }
-                })
+            $('#modalAddInformasi').on('show.coreui.modal', function(e) {
+                let btn = $(e.relatedTarget)
+                let modal = $(this)
+                let url = '';
+                let form = modal.find('form')
+                form.get(0).reset();
+                modal.find('form input[name="_method"]').remove();
+                modal.find('form input[name="id"]').remove();
+                if (btn.attr('data-id') != undefined) {
+                    let id = btn.attr('data-id')
+                    url = '{{ route('sekretariat.news.update', ['id' => ' ']) }}'
+                    url = url.replace('%20', id)
+                    modal.find('button[type="submit"]').text('Ubah')
+                    form.append('<input type="hidden" name="_method" value="PUT"/>')
+                    form.append('<input type="hidden" name="id" value="' + id + '"/>')
+
+                    baseAjax(url, 'GET', function(response) {
+                        modal.find('textarea[name="description"]').val(response.description)
+                    })
+                } else {
+                    url = '{!! route('sekretariat.news.store') !!}'
+                    modal.find('button[type="submit"]').text('Simpan')
+                }
+                form.attr('action', url);
             })
 
-            $(document).on('click', '#btnAddSubmission', function(e) {
-                let btn = $(this)
-                window.location = btn.attr('data-url')
+            $(document).on('submit', '#formAddInformasi', function(e) {
+                e.preventDefault();
+                let modal = $('#modalAddInformasi');
+
+                formAjax($(this), modal, function(data, status, jqxhr, form, modal) {
+                    baseSwal('success', 'Success', 'Data berhasil disimpan')
+                    modal.modal('hide')
+                    datatable.ajax.reload()
+                })
             })
 
             $(document).on('submit', '#formDelete', function(e) {

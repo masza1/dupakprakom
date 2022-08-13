@@ -42,14 +42,14 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="start_date">Masa Penilaian Awal</label>
-                                        <input class="form-control" type="date" id="start_date" value="{{ $submission->start_date }}" disabled readonly>
+                                        <label for="p_mulai_pengisian">Masa Pengisisan Awal</label>
+                                        <input class="form-control" type="date" id="p_mulai_pengisian" value="{{ $submission->p_mulai_pengisian }}" disabled readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="end_date">Masa Penilaian Akhir</label>
-                                        <input class="form-control" type="date" id="end_date" value="{{ $submission->end_date }}" disabled readonly>
+                                        <label for="p_akhir_pengisian">Masa Pengisisan Akhir</label>
+                                        <input class="form-control" type="date" id="p_akhir_pengisian" value="{{ $submission->p_akhir_pengisian }}" disabled readonly>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -538,13 +538,13 @@
                 $('#dataPengajuan input[name="status"]').val($(this).attr('data-type'))
                 let type = $(this).attr('data-type')
                 let msg = ''
-                if(type == 'PENGAJUAN'){
-                    msg = `Menyimpan DUPAK sebagai DRAFT, Anda Yakin ?` 
-                }else if(type ==  'TELAH DINILAI'){
-                    msg = `Menyimpan DUPAK sebagai TELAH DINILAI, Anda Yakin ?` 
-                }else if(type == 'REVISI'){
-                    msg = `mengembalikan DUPAK untuk di REVISI ?` 
-                }else if(type == 'TOLAK'){
+                if (type == 'PENGAJUAN') {
+                    msg = `Menyimpan DUPAK sebagai DRAFT, Anda Yakin ?`
+                } else if (type == 'TELAH DINILAI') {
+                    msg = `Menyimpan DUPAK sebagai TELAH DINILAI, Anda Yakin ?`
+                } else if (type == 'REVISI') {
+                    msg = `mengembalikan DUPAK untuk di REVISI ?`
+                } else if (type == 'TOLAK') {
                     msg = `Anda akan menolak DUPAK ini, Anda yakin ?`
                 }
 
@@ -586,7 +586,7 @@
                 baseAjax(urlKegiatan, 'GET', function(response) {
                     $('#activity_id').empty().append('<option value="">-- Pilih Kegiatan --</option>')
                     $.each(response, function(index, value) {
-                        $('#activity_id').append(`<option value="${value.id}" data-output="${value.output}" data-credit="${value.credit}">${value.description}</option>`)
+                        $('#activity_id').append(`<option value="${value.id}" data-sub="${value.sub_element_id}" data-output="${value.output}" data-credit="${value.credit}">${value.description}</option>`)
                     })
                 }, {
                     element_id: $(this).val()
@@ -603,14 +603,21 @@
                 $('#output').val(null)
                 $('#jumlah').val(null)
                 $('#total_credit').val(null)
-                baseAjax(urlKegiatan, 'GET', function(response) {
-                    $('#activity_id').empty().append('<option value="">-- Pilih Kegiatan --</option>')
-                    $.each(response, function(index, value) {
-                        $('#activity_id').append(`<option value="${value.id}" data-output="${value.output}" data-credit="${value.credit}">${value.description}</option>`)
-                    })
-                }, {
-                    sub_element_id: $(this).val()
+                $.each($('#activity_id option'), function(index, value) {
+                    if ($(value).attr('data-sub') != $('#sub_element_id').val()) {
+                        $(value).css({
+                            'display': 'none'
+                        })
+                    }
                 })
+                // baseAjax(urlKegiatan, 'GET', function(response) {
+                //     $('#activity_id').empty().append('<option value="">-- Pilih Kegiatan --</option>')
+                //     $.each(response, function(index, value) {
+                //         $('#activity_id').append(`<option value="${value.id}" data-output="${value.output}" data-credit="${value.credit}">${value.description}</option>`)
+                //     })
+                // }, {
+                //     sub_element_id: $(this).val()
+                // })
             })
 
             $('#activity_id').on('change', function(e) {
@@ -642,21 +649,21 @@
                     if (activity == 'activity_id') {
                         if ($(value).attr('data-type') == 'TUGAS') {
                             $(value).css({
-                                'display':'block'
+                                'display': 'block'
                             })
                         } else {
                             $(value).css({
-                                'display':'none'
+                                'display': 'none'
                             })
                         }
                     } else {
                         if ($(value).attr('data-type') == 'PPP') {
                             $(value).css({
-                                'display':'block'
+                                'display': 'block'
                             })
                         } else {
                             $(value).css({
-                                'display':'none'
+                                'display': 'none'
                             })
                         }
                     }
@@ -730,7 +737,7 @@
                         }
                         if (response.description != null && response.description != '') {
                             canvas.find('textarea[name="description"]').val(response.description)
-                            canvas.find('textarea[name="description"]').prop('disabled', true);
+                            // canvas.find('textarea[name="description"]').prop('disabled', true);
                         } else {
                             if (user_level != 'prakom' && user_level != 'admin') {
                                 canvas.find('textarea[name="description"]').removeAttr('disabled');
