@@ -108,7 +108,6 @@ class UserController extends Controller
             $user->employee()->create($validatedDetail);
             if($validatedUser['level'] == 'prakom'){
                 Nilai::create([
-                    'user_id' => $user->id,
                     'employee_id' => $user->employee->id,
                     'isNew' => true,
                 ]);
